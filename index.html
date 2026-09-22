@@ -58,16 +58,10 @@ html[data-theme="light"] .blob{opacity:.25;}
    touching component CSS. */
 section{
   background:
-    radial-gradient(1100px circle at 12% -10%, var(--wash), transparent 60%),
-    radial-gradient(900px circle at 100% 110%, var(--wash), transparent 55%);
-  border-top:1px solid var(--border);
+    radial-gradient(140% 100% at 15% 0%, var(--wash), transparent 75%),
+    radial-gradient(140% 100% at 100% 100%, var(--wash), transparent 75%);
+  transition:background 1s ease;
 }
-section::before{
-  content:"";position:absolute;top:-1px;left:0;right:0;height:2px;z-index:1;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.55;
-}
-section.hero{border-top:none;}
-section.hero::before{content:none;}
 #experience{--accent:#8b5cf6;--accent-2:#a78bfa;--accent-3:#f472b6;--accent-glow:rgba(139,92,246,.35);--wash:rgba(139,92,246,.16);}
 #ai{--accent:#22d3ee;--accent-2:#38bdf8;--accent-3:#818cf8;--accent-glow:rgba(34,211,238,.35);--wash:rgba(34,211,238,.16);--radius:20px;}
 #skills{--accent:#fbbf24;--accent-2:#f59e0b;--accent-3:#fb923c;--accent-glow:rgba(251,191,36,.35);--wash:rgba(251,191,36,.13);--radius:6px;}
@@ -289,7 +283,7 @@ section:not(#top):not(#about){content-visibility:auto;contain-intrinsic-size:1px
 .achv-card p b{color:var(--text);}
 
 /* ---------- PROJECTS ---------- */
-.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;}
+.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:22px;}
 .project-card{
   border:1px solid var(--border);border-radius:var(--radius);padding:26px;background:var(--panel);
   position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, box-shadow .35s;
