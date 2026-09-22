@@ -234,6 +234,89 @@ section{padding:100px 0;position:relative;}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;}
 .tag-row span{font-family:var(--mono);font-size:11px;color:var(--text-faint);background:var(--panel-2);padding:4px 9px;border-radius:6px;border:1px solid var(--border);}
 
+/* ---------- LIVE PREVIEW EMBED ---------- */
+.live-preview{
+  margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--border);
+  background:#05070c;position:relative;
+}
+.lp-chrome{
+  display:flex;align-items:center;gap:8px;padding:8px 10px;background:#0c1119;border-bottom:1px solid var(--border);
+}
+.lp-chrome .card-dots span{width:8px;height:8px;}
+.lp-url{
+  flex:1;font-family:var(--mono);font-size:10.5px;color:var(--text-faint);
+  background:var(--panel-2);border-radius:6px;padding:4px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.lp-frame-wrap{position:relative;aspect-ratio:16/10;background:#05070c;}
+.lp-frame-wrap iframe{width:100%;height:100%;border:0;display:block;background:#fff;}
+.lp-overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:radial-gradient(circle at 50% 40%, rgba(57,255,199,0.08), transparent 70%), #0a0e16;
+  cursor:pointer;transition:background .3s;
+}
+.lp-overlay:hover{background:radial-gradient(circle at 50% 40%, rgba(57,255,199,0.14), transparent 70%), #0a0e16;}
+.lp-play{
+  width:56px;height:56px;border-radius:50%;border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;
+  color:var(--accent);position:relative;
+}
+.lp-play::before{
+  content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--accent);opacity:.5;
+  animation:ripple 2.2s ease-out infinite;
+}
+@keyframes ripple{0%{transform:scale(0.9);opacity:.6;}100%{transform:scale(1.6);opacity:0;}}
+.lp-play svg{width:20px;height:20px;margin-left:3px;}
+.lp-overlay-label{font-family:var(--mono);font-size:12px;color:var(--text-dim);letter-spacing:.5px;}
+.lp-loading{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--mono);font-size:12px;color:var(--text-faint);background:#05070c;
+}
+.lp-loading .spin{width:14px;height:14px;border:2px solid var(--border-bright);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+
+/* ---------- TILT ---------- */
+.tilt{transform-style:preserve-3d;transition:transform .12s ease-out;}
+
+/* ---------- SCROLL PROGRESS BAR ---------- */
+#scrollbar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:200;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));box-shadow:0 0 12px var(--accent-glow);transition:width .1s linear;}
+
+/* ---------- BLOBS ---------- */
+.blob{position:fixed;border-radius:50%;filter:blur(90px);z-index:0;pointer-events:none;opacity:.25;}
+.blob-1{width:520px;height:520px;background:var(--accent);top:-120px;left:-160px;animation:blobMove1 22s ease-in-out infinite;}
+.blob-2{width:460px;height:460px;background:var(--accent-2);bottom:-140px;right:-140px;animation:blobMove2 26s ease-in-out infinite;}
+.blob-3{width:360px;height:360px;background:var(--accent-3);top:45%;left:50%;animation:blobMove3 30s ease-in-out infinite;opacity:.14;}
+@keyframes blobMove1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(120px,140px) scale(1.15);}}
+@keyframes blobMove2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-100px,-120px) scale(1.2);}}
+@keyframes blobMove3{0%,100%{transform:translate(-50%,-50%) scale(1);}33%{transform:translate(-30%,-60%) scale(1.3);}66%{transform:translate(-65%,-40%) scale(0.85);}}
+
+/* ---------- GLITCH TITLE ---------- */
+.glitch-word{position:relative;display:inline-block;}
+.glitch-word.glitching::before,
+.glitch-word.glitching::after{
+  content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden;
+  background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.glitch-word.glitching::before{animation:glitchTop 0.5s steps(2,end) 2;left:2px;text-shadow:-2px 0 var(--accent-3);}
+.glitch-word.glitching::after{animation:glitchBot 0.5s steps(2,end) 2;left:-2px;text-shadow:2px 0 var(--accent-2);}
+@keyframes glitchTop{0%{clip-path:inset(0 0 60% 0);transform:translate(-2px,-1px);}50%{clip-path:inset(40% 0 20% 0);transform:translate(2px,1px);}100%{clip-path:inset(80% 0 0 0);transform:translate(-1px,0);}}
+@keyframes glitchBot{0%{clip-path:inset(60% 0 0 0);transform:translate(2px,1px);}50%{clip-path:inset(10% 0 60% 0);transform:translate(-2px,-1px);}100%{clip-path:inset(0 0 85% 0);transform:translate(1px,0);}}
+
+/* ---------- MAGNETIC BUTTON GLOW ---------- */
+.btn{position:relative;}
+.btn .glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.18), transparent 60%);opacity:0;transition:opacity .25s;}
+.btn:hover .glow{opacity:1;}
+
+/* ---------- SPOTLIGHT CARD ---------- */
+.spotlight{position:relative;}
+.spotlight::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(260px circle at var(--sx,50%) var(--sy,50%), rgba(57,255,199,0.12), transparent 65%);
+}
+.spotlight:hover::after{opacity:1;}
+
+@media (prefers-reduced-motion: reduce){
+  .blob,.floaty,.hero-card,.lp-play::before{animation:none !important;}
+  *{scroll-behavior:auto !important;}
+}
+
 /* ---------- GITHUB REPOS ---------- */
 .gh-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:14px;}
 .gh-search{
@@ -305,6 +388,10 @@ footer .heart{color:var(--accent-3);}
 <body>
 <canvas id="circuit-canvas"></canvas>
 <div class="noise"></div>
+<div id="scrollbar"></div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
 
 <nav>
   <div class="nav-inner">
@@ -329,7 +416,7 @@ footer .heart{color:var(--accent-3);}
   <div class="hero-grid">
     <div>
       <div class="eyebrow">Open to Senior / Lead roles</div>
-      <h1 class="title">Building software that <span class="accent-word">grounds itself</span> in real code.</h1>
+      <h1 class="title">Building software that <span class="accent-word glitch-word" data-text="grounds itself" id="glitchTitle">grounds itself</span> in real code.</h1>
       <p class="subtitle">Senior Software Engineer &amp; AI Generalist — 9.7 years across the full stack. Frontend-deep on React/ExtJS, Java/Spring backends, and production AI agents wired into real engineering workflows.</p>
       <div class="typewriter-line"><span id="typewriter"></span><span class="cursor">&nbsp;</span></div>
       <div class="hero-cta">
@@ -489,7 +576,7 @@ footer .heart{color:var(--accent-3);}
   </div>
   <div class="project-grid reveal">
 
-    <div class="project-card">
+    <div class="project-card tilt spotlight">
       <div class="project-top">
         <div class="project-name">BabuScales</div>
         <div class="project-links">
@@ -504,9 +591,10 @@ footer .heart{color:var(--accent-3);}
         </ul>
       </div>
       <div class="tag-row"><span>Tauri v2</span><span>Rust</span><span>React 19</span><span>SQLite</span></div>
+      <div class="live-preview" data-live-url="https://moleesh.github.io/babuscales/"></div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card tilt spotlight">
       <div class="project-top">
         <div class="project-name">HireWise</div>
         <div class="project-links">
@@ -521,9 +609,10 @@ footer .heart{color:var(--accent-3);}
         </ul>
       </div>
       <div class="tag-row"><span>React 19</span><span>Vite</span><span>Supabase</span><span>Claude API</span></div>
+      <div class="live-preview" data-live-url="https://moleesh.github.io/HireWise/"></div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card tilt spotlight">
       <div class="project-top">
         <div class="project-name">FirstDay</div>
         <div class="project-links">
@@ -538,9 +627,10 @@ footer .heart{color:var(--accent-3);}
         </ul>
       </div>
       <div class="tag-row"><span>Next.js 16</span><span>Zustand</span><span>TanStack Query</span><span>Turborepo</span></div>
+      <div class="live-preview" data-live-url="https://moleesh.github.io/FirstDay/"></div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card tilt spotlight">
       <div class="project-top">
         <div class="project-name">VaultBill</div>
         <div class="project-links">
@@ -555,6 +645,7 @@ footer .heart{color:var(--accent-3);}
         </ul>
       </div>
       <div class="tag-row"><span>React</span><span>Electron</span><span>TanStack Query</span><span>SQLite</span></div>
+      <div class="live-preview" data-live-url="https://moleesh.github.io/VaultBill/"></div>
     </div>
 
   </div>
@@ -781,7 +872,7 @@ function repoCardHTML(r){
   const lang = r.language || 'Other';
   const color = langColors[lang] || '#6b7a99';
   const updated = new Date(r.pushed_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-  return `<div class="repo-card" onclick="window.open('${r.html_url}','_blank')">
+  return `<div class="repo-card spotlight" onclick="window.open('${r.html_url}','_blank')">
     <div class="repo-name">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 0 1 6 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg>
       ${r.name}
@@ -825,6 +916,105 @@ document.getElementById('repoSearch').addEventListener('input', (e)=>{
     (r.language||'').toLowerCase().includes(q)
   );
   renderRepos(filtered.slice(0,24));
+});
+
+/* -------- scroll progress bar -------- */
+const scrollbar = document.getElementById('scrollbar');
+function updateScrollbar(){
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  scrollbar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateScrollbar, {passive:true});
+updateScrollbar();
+
+/* -------- parallax blobs on scroll -------- */
+const blobs = document.querySelectorAll('.blob');
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY;
+  blobs.forEach((b,i)=>{ b.style.transform = `translateY(${y * (0.05 + i*0.03)}px)`; });
+}, {passive:true});
+
+/* -------- glitch title retrigger on hover -------- */
+const glitchTitle = document.getElementById('glitchTitle');
+if(glitchTitle){
+  setTimeout(()=>{ glitchTitle.classList.add('glitching'); setTimeout(()=>glitchTitle.classList.remove('glitching'),1000); }, 900);
+  glitchTitle.addEventListener('mouseenter', ()=>{
+    glitchTitle.classList.remove('glitching'); void glitchTitle.offsetWidth;
+    glitchTitle.classList.add('glitching');
+    setTimeout(()=>glitchTitle.classList.remove('glitching'),1000);
+  });
+}
+
+/* -------- magnetic button glow (follows cursor) -------- */
+document.querySelectorAll('.btn').forEach(btn=>{
+  if(!btn.querySelector('.glow')){ const g=document.createElement('span'); g.className='glow'; btn.appendChild(g); }
+  btn.addEventListener('mousemove', e=>{
+    const r = btn.getBoundingClientRect();
+    btn.style.setProperty('--mx', (e.clientX-r.left)+'px');
+    btn.style.setProperty('--my', (e.clientY-r.top)+'px');
+  });
+});
+
+/* -------- tilt + spotlight (event delegation for dynamic repo cards) -------- */
+document.addEventListener('mousemove', (e)=>{
+  const tiltEl = e.target.closest('.tilt');
+  if(tiltEl){
+    const r = tiltEl.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    tiltEl.style.transform = `perspective(900px) rotateX(${(-py*6).toFixed(2)}deg) rotateY(${(px*8).toFixed(2)}deg) translateY(-6px)`;
+  }
+  const spotEl = e.target.closest('.spotlight');
+  if(spotEl){
+    const r = spotEl.getBoundingClientRect();
+    spotEl.style.setProperty('--sx', (e.clientX-r.left)+'px');
+    spotEl.style.setProperty('--sy', (e.clientY-r.top)+'px');
+  }
+});
+document.addEventListener('mouseleave', (e)=>{
+  if(e.target.classList && e.target.classList.contains('tilt')){
+    e.target.style.transform = '';
+  }
+}, true);
+document.querySelectorAll('.tilt').forEach(el=>{
+  el.addEventListener('mouseleave', ()=>{ el.style.transform=''; });
+});
+
+/* -------- live preview embeds (lazy-loaded on click) -------- */
+document.querySelectorAll('.live-preview').forEach(container=>{
+  const url = container.dataset.liveUrl;
+  const shortUrl = url.replace(/^https?:\/\//,'').replace(/\/$/,'');
+  container.innerHTML = `
+    <div class="lp-chrome">
+      <div class="card-dots"><span></span><span></span><span></span></div>
+      <div class="lp-url">${shortUrl}</div>
+    </div>
+    <div class="lp-frame-wrap">
+      <div class="lp-overlay" role="button" tabindex="0" aria-label="Load live preview">
+        <div class="lp-play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="lp-overlay-label">Launch live preview</div>
+      </div>
+    </div>`;
+  const overlay = container.querySelector('.lp-overlay');
+  const frameWrap = container.querySelector('.lp-frame-wrap');
+  function loadPreview(){
+    frameWrap.innerHTML = `<div class="lp-loading"><span class="spin"></span>Loading ${shortUrl}…</div>`;
+    const iframe = document.createElement('iframe');
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer';
+    iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups';
+    iframe.src = url;
+    iframe.addEventListener('load', ()=>{
+      const loading = frameWrap.querySelector('.lp-loading');
+      if(loading) loading.remove();
+    });
+    frameWrap.appendChild(iframe);
+  }
+  overlay.addEventListener('click', loadPreview);
+  overlay.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); loadPreview(); } });
 });
 </script>
 </body>
