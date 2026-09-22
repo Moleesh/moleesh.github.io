@@ -368,7 +368,7 @@ section:not(#top):not(#about){content-visibility:auto;contain-intrinsic-size:1px
 .spotlight:hover::after{opacity:1;}
 
 @media (prefers-reduced-motion: reduce){
-  .blob,.floaty,.hero-card,.lp-play::before{animation:none !important;}
+  .blob,.floaty,.hero-card,.lp-play::before,#chatToggle,#chatToggle .chat-ping{animation:none !important;}
   *{scroll-behavior:auto !important;}
 }
 
@@ -469,8 +469,6 @@ footer .heart{color:var(--accent-3);}
   .stat-num{animation:numGlow 2.6s ease-in-out infinite;}
   @keyframes numGlow{0%,100%{text-shadow:0 0 0 transparent;}50%{text-shadow:0 0 14px var(--accent-glow);}}
 
-  #chatToggle{animation:floaty 3s ease-in-out infinite, chatGlowPulse 2.4s ease-in-out infinite;}
-  @keyframes chatGlowPulse{0%,100%{box-shadow:0 10px 26px -6px var(--accent-glow);}50%{box-shadow:0 14px 38px -4px var(--accent-glow), 0 0 0 6px rgba(57,255,199,0.12);}}
 }
 @media (max-width:520px){
   section{padding:70px 0;}
@@ -505,13 +503,17 @@ footer .heart{color:var(--accent-3);}
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 10px 26px -6px var(--accent-glow);
   transition:transform .25s;
+  animation:floaty 3s ease-in-out infinite, chatGlowPulse 2.4s ease-in-out infinite;
 }
+@keyframes chatGlowPulse{0%,100%{box-shadow:0 10px 26px -6px var(--accent-glow);}50%{box-shadow:0 14px 38px -4px var(--accent-glow), 0 0 0 6px rgba(57,255,199,0.12);}}
 #chatToggle:hover{transform:scale(1.08);}
 #chatToggle svg{width:24px;height:24px;}
 #chatToggle .chat-ping{
   position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;
   background:var(--accent-3);border:2px solid var(--bg);
+  animation:pingPop 1.8s ease-in-out infinite;
 }
+@keyframes pingPop{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
 #chatPanel{
   position:fixed;bottom:150px;right:26px;width:340px;max-width:calc(100vw - 32px);height:460px;max-height:70vh;
   background:var(--panel);border:1px solid var(--border-bright);border-radius:16px;
