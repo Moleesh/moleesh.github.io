@@ -49,6 +49,21 @@ html[data-theme="light"]{
 }
 html[data-theme="light"] #circuit-canvas{opacity:0.18;}
 html[data-theme="light"] .blob{opacity:.25;}
+
+/* ---------- PER-SECTION ACCENT THEMES ---------- */
+/* Each section runs its own accent triad — .section-tag, chips, borders,
+   glows etc. all read var(--accent*), so overriding here re-themes
+   everything inside without touching component CSS. */
+#experience{--accent:#8b5cf6;--accent-2:#a78bfa;--accent-3:#f472b6;--accent-glow:rgba(139,92,246,.35);}
+#ai{--accent:#22d3ee;--accent-2:#38bdf8;--accent-3:#818cf8;--accent-glow:rgba(34,211,238,.35);}
+#skills{--accent:#fbbf24;--accent-2:#f59e0b;--accent-3:#fb923c;--accent-glow:rgba(251,191,36,.35);}
+#domain{--accent:#fb7185;--accent-2:#f43f5e;--accent-3:#fda4af;--accent-glow:rgba(251,113,133,.35);}
+#achievements{--accent:#4ade80;--accent-2:#22c55e;--accent-3:#a3e635;--accent-glow:rgba(74,222,128,.35);}
+#hobbies{--accent:#fb923c;--accent-2:#f97316;--accent-3:#fdba74;--accent-glow:rgba(251,146,60,.35);}
+#projects{--accent:#6366f1;--accent-2:#818cf8;--accent-3:#38bdf8;--accent-glow:rgba(99,102,241,.35);}
+#repos{--accent:#2dd4bf;--accent-2:#06b6d4;--accent-3:#67e8f9;--accent-glow:rgba(45,212,191,.35);}
+#contact{--accent:#e879f9;--accent-2:#d946ef;--accent-3:#f0abfc;--accent-glow:rgba(232,121,249,.35);}
+
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 html.custom-cursor, html.custom-cursor *{cursor:none !important;}
@@ -503,14 +518,15 @@ footer .heart{color:var(--accent-3);}
 
 /* ---------- CHATBOT ---------- */
 #chatToggle{
-  position:fixed;bottom:90px;right:26px;width:52px;height:52px;border-radius:50%;
+  position:fixed;bottom:26px;right:26px;width:52px;height:52px;border-radius:50%;
   background:conic-gradient(from 0deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));
   color:var(--accent);border:none;cursor:pointer;z-index:95;padding:3px;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 10px 26px -6px var(--accent-glow);
-  transition:transform .25s;
+  transition:transform .25s, bottom .3s ease;
   animation:floaty 3s ease-in-out infinite, chatGlowPulse 2.4s ease-in-out infinite, chatRingSpin 5s linear infinite;
 }
+#chatToggle.raised{bottom:90px;}
 @keyframes chatRingSpin{100%{background:conic-gradient(from 360deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));}}
 @keyframes chatGlowPulse{0%,100%{box-shadow:0 10px 26px -6px var(--accent-glow);}50%{box-shadow:0 14px 38px -4px var(--accent-glow), 0 0 0 6px rgba(57,255,199,0.12);}}
 #chatToggle:hover{transform:scale(1.08);}
@@ -597,7 +613,8 @@ footer .heart{color:var(--accent-3);}
 .msg a{color:inherit;font-weight:600;text-decoration:underline;}
 @media (max-width:520px){
   #chatPanel{right:12px;left:12px;width:auto;bottom:140px;}
-  #chatToggle{right:16px;bottom:78px;}
+  #chatToggle{right:16px;bottom:22px;}
+  #chatToggle.raised{bottom:78px;}
 }
 </style>
 </head>
@@ -1157,8 +1174,11 @@ document.querySelectorAll('.stat-num').forEach(el=>statObserver.observe(el));
 
 /* -------- back to top + nav border on scroll -------- */
 const toTop = document.getElementById('toTop');
+const chatToggleBtn = document.getElementById('chatToggle');
 window.addEventListener('scroll', ()=>{
-  toTop.classList.toggle('show', window.scrollY > 500);
+  const past = window.scrollY > 500;
+  toTop.classList.toggle('show', past);
+  chatToggleBtn.classList.toggle('raised', past);
 });
 toTop.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
 
