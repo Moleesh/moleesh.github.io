@@ -56,16 +56,27 @@ html[data-theme="light"] .blob{opacity:.25;}
    .section-tag, chips, borders, glows and card corners all read var(--accent*)
    / var(--radius), so overriding here re-themes everything inside without
    touching component CSS. */
-section{background:radial-gradient(ellipse 900px 500px at 15% 0%, var(--wash), transparent 65%);}
-#experience{--accent:#8b5cf6;--accent-2:#a78bfa;--accent-3:#f472b6;--accent-glow:rgba(139,92,246,.35);--wash:rgba(139,92,246,.1);}
-#ai{--accent:#22d3ee;--accent-2:#38bdf8;--accent-3:#818cf8;--accent-glow:rgba(34,211,238,.35);--wash:rgba(34,211,238,.1);--radius:20px;}
-#skills{--accent:#fbbf24;--accent-2:#f59e0b;--accent-3:#fb923c;--accent-glow:rgba(251,191,36,.35);--wash:rgba(251,191,36,.08);--radius:6px;}
-#domain{--accent:#fb7185;--accent-2:#f43f5e;--accent-3:#fda4af;--accent-glow:rgba(251,113,133,.35);--wash:rgba(251,113,133,.09);--radius:20px;}
-#achievements{--accent:#4ade80;--accent-2:#22c55e;--accent-3:#a3e635;--accent-glow:rgba(74,222,128,.35);--wash:rgba(74,222,128,.09);--radius:26px;}
-#hobbies{--accent:#fb923c;--accent-2:#f97316;--accent-3:#fdba74;--accent-glow:rgba(251,146,60,.35);--wash:rgba(251,146,60,.1);--radius:28px;}
-#projects{--accent:#6366f1;--accent-2:#818cf8;--accent-3:#38bdf8;--accent-glow:rgba(99,102,241,.35);--wash:rgba(99,102,241,.1);--radius:14px;}
-#repos{--accent:#2dd4bf;--accent-2:#06b6d4;--accent-3:#67e8f9;--accent-glow:rgba(45,212,191,.35);--wash:rgba(45,212,191,.09);--radius:8px;}
-#contact{--accent:#e879f9;--accent-2:#d946ef;--accent-3:#f0abfc;--accent-glow:rgba(232,121,249,.35);--wash:rgba(232,121,249,.12);--radius:28px;}
+section{
+  background:
+    radial-gradient(1100px circle at 12% -10%, var(--wash), transparent 60%),
+    radial-gradient(900px circle at 100% 110%, var(--wash), transparent 55%);
+  border-top:1px solid var(--border);
+}
+section::before{
+  content:"";position:absolute;top:-1px;left:0;right:0;height:2px;z-index:1;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.55;
+}
+section.hero{border-top:none;}
+section.hero::before{content:none;}
+#experience{--accent:#8b5cf6;--accent-2:#a78bfa;--accent-3:#f472b6;--accent-glow:rgba(139,92,246,.35);--wash:rgba(139,92,246,.16);}
+#ai{--accent:#22d3ee;--accent-2:#38bdf8;--accent-3:#818cf8;--accent-glow:rgba(34,211,238,.35);--wash:rgba(34,211,238,.16);--radius:20px;}
+#skills{--accent:#fbbf24;--accent-2:#f59e0b;--accent-3:#fb923c;--accent-glow:rgba(251,191,36,.35);--wash:rgba(251,191,36,.13);--radius:6px;}
+#domain{--accent:#fb7185;--accent-2:#f43f5e;--accent-3:#fda4af;--accent-glow:rgba(251,113,133,.35);--wash:rgba(251,113,133,.14);--radius:20px;}
+#achievements{--accent:#4ade80;--accent-2:#22c55e;--accent-3:#a3e635;--accent-glow:rgba(74,222,128,.35);--wash:rgba(74,222,128,.14);--radius:26px;}
+#hobbies{--accent:#fb923c;--accent-2:#f97316;--accent-3:#fdba74;--accent-glow:rgba(251,146,60,.35);--wash:rgba(251,146,60,.16);--radius:28px;}
+#projects{--accent:#6366f1;--accent-2:#818cf8;--accent-3:#38bdf8;--accent-glow:rgba(99,102,241,.35);--wash:rgba(99,102,241,.16);--radius:14px;}
+#repos{--accent:#2dd4bf;--accent-2:#06b6d4;--accent-3:#67e8f9;--accent-glow:rgba(45,212,191,.35);--wash:rgba(45,212,191,.14);--radius:8px;}
+#contact{--accent:#e879f9;--accent-2:#d946ef;--accent-3:#f0abfc;--accent-glow:rgba(232,121,249,.35);--wash:rgba(232,121,249,.18);--radius:28px;}
 
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -682,7 +693,7 @@ footer .heart{color:var(--accent-3);}
       <div class="card-line com">// engineer.json</div>
       <div class="card-line">{</div>
       <div class="card-line">&nbsp;&nbsp;<span class="key">"name"</span>: <span class="str">"A Moleesh"</span>,</div>
-      <div class="card-line">&nbsp;&nbsp;<span class="key">"role"</span>: <span class="str">"Module Lead"</span>,</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"role"</span>: <span class="str">"Senior Software Engineer / Lead"</span>,</div>
       <div class="card-line">&nbsp;&nbsp;<span class="key">"experience"</span>: <span class="str">"9.7 yrs"</span>,</div>
       <div class="card-line">&nbsp;&nbsp;<span class="key">"stack"</span>: [<span class="str">"React"</span>, <span class="str">"Java"</span>,</div>
       <div class="card-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Spring"</span>, <span class="str">"AI Agents"</span>],</div>
