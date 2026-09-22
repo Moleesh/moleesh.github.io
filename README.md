@@ -1,37 +1,42 @@
-## Welcome to GitHub Pages
+# moleesh.github.io
 
-You can use the [editor on GitHub](https://github.com/Moleesh/terminal/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Personal portfolio site for **A Moleesh** — Senior Software Engineer & AI Generalist.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Live at: https://moleesh.github.io
 
-### Markdown
+## What's here
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+A single-page, static HTML/CSS/JS site (no build step, no framework) covering:
 
-```markdown
-Syntax highlighted code block
+- Hero intro with a typewriter tagline and animated circuit-board canvas background
+- About, experience timeline, AI engineering highlight (KIMMY), and skills
+- Featured projects (BabuScales, HireWise, FirstDay, VaultBill)
+- **Live GitHub repositories**, fetched client-side from the GitHub REST API (`/users/moleesh/repos`) with search/filter
+- Resume ([resume.pdf](resume.pdf)) and contact links (email, phone, GitHub, LinkedIn)
 
-# Header 1
-## Header 2
-### Header 3
+## Stack
 
-- Bulleted
-- List
+Plain HTML5, CSS3 (custom properties, no framework), and vanilla JS. Fonts via Google Fonts (Space Grotesk, JetBrains Mono).
 
-1. Numbered
-2. List
+## Deployment
 
-**Bold** and _Italic_ and `Code` text
+Deployed via GitHub Actions (`.github/workflows/deploy.yml`) using the official Pages actions
+(`actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`) — every push to
+`master` rebuilds and republishes the site. No Jekyll processing (`.nojekyll` present); files ship as-is.
 
-[Link](url) and ![Image](src)
+Repo Settings → Pages → Source must be set to **GitHub Actions** for the workflow to publish.
+
+## Local preview
+
+Any static file server works, e.g.:
+
+```bash
+python -m http.server 8080
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Then open `http://localhost:8080`.
 
-### Jekyll Themes
+## Updating the resume
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Moleesh/terminal/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Replace [resume.pdf](resume.pdf) with the latest export and commit — the "View Resume" button and
+footer link point directly at that file.
