@@ -318,13 +318,17 @@ section:not(#top):not(#about){content-visibility:auto;contain-intrinsic-size:1px
   background:#05070c;position:relative;display:flex;flex-direction:column;
 }
 .lp-chrome{
-  display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--panel-2);border-top:1px solid var(--border);order:2;
+  display:flex;align-items:center;gap:8px;padding:8px;background:var(--panel-2);border-top:1px solid var(--border);order:2;
 }
-.lp-chrome .card-dots span{width:8px;height:8px;}
-.lp-url{
-  flex:1;font-family:var(--mono);font-size:10.5px;color:var(--text-faint);
-  background:var(--panel);border-radius:6px;padding:4px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+.lp-btn{
+  display:flex;align-items:center;gap:6px;flex:1;justify-content:center;
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);
+  background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:7px 10px;
+  text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  transition:border-color .2s, color .2s, background .2s;
 }
+.lp-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--panel-2);}
+.lp-btn svg{width:13px;height:13px;flex-shrink:0;}
 .lp-frame-wrap{position:relative;aspect-ratio:16/10;background:#05070c;order:1;}
 .lp-frame-wrap iframe{width:100%;height:100%;border:0;display:block;background:#fff;}
 .lp-overlay{
@@ -460,6 +464,7 @@ footer .heart{color:var(--accent-3);}
   .about-grid{grid-template-columns:1fr;}
   .nav-links{display:none;}
   .hamburger{display:flex;}
+  .project-grid{grid-template-columns:1fr;}
 }
 
 /* ---------- MOBILE: crazier than desktop (most viewers are on phones) ---------- */
@@ -502,6 +507,8 @@ footer .heart{color:var(--accent-3);}
   section{padding:70px 0;}
   .stat-grid{grid-template-columns:1fr 1fr;}
   .gh-search{width:100%;}
+  .hero-card{font-size:10.5px;overflow-x:auto;}
+  .project-top .project-links a[aria-label="Visit live site"]{display:none;}
 }
 
 /* ---------- CURSOR GLOW (lightweight, desktop-only) ---------- */
@@ -1459,8 +1466,10 @@ document.querySelectorAll('.live-preview').forEach(container=>{
   const shortUrl = url.replace(/^https?:\/\//,'').replace(/\/$/,'');
   container.innerHTML = `
     <div class="lp-chrome">
-      <div class="card-dots"><span></span><span></span><span></span></div>
-      <div class="lp-url">${shortUrl}</div>
+      <a class="lp-btn" href="${url}" target="_blank" rel="noopener" title="${shortUrl}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        Open live site
+      </a>
     </div>
     <div class="lp-frame-wrap">
       <div class="lp-overlay" role="button" tabindex="0" aria-label="Load live preview">
