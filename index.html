@@ -411,6 +411,11 @@ section:not(#top):not(#about){content-visibility:auto;contain-intrinsic-size:1px
 }
 .icon-link:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-4px);box-shadow:0 10px 24px -8px var(--accent-glow);}
 .icon-link svg{width:22px;height:22px;}
+.icon-link.icon-link-highlight{
+  background:var(--accent);border-color:var(--accent);color:#00140f;
+  box-shadow:0 10px 24px -8px var(--accent-glow);
+}
+.icon-link.icon-link-highlight:hover{color:#00140f;transform:translateY(-4px) scale(1.05);box-shadow:0 14px 32px -6px var(--accent-glow);}
 
 footer{padding:36px 0;border-top:1px solid var(--border);text-align:center;}
 footer p{font-family:var(--mono);font-size:12px;color:var(--text-faint);}
@@ -764,7 +769,7 @@ footer .heart{color:var(--accent-3);}
       <span class="chip">Claude AI API</span><span class="chip">OpenAI Codex</span><span class="chip">Cursor</span><span class="chip">GitHub Copilot</span><span class="chip">MCP</span><span class="chip">Multi-agent systems</span><span class="chip">Prompt engineering</span>
     </div></div>
     <div class="skill-cat"><h4>Databases</h4><div class="chip-row">
-      <span class="chip">MySQL</span><span class="chip">Oracle</span><span class="chip">PostgreSQL</span><span class="chip">MongoDB</span><span class="chip">H2</span><span class="chip">Supabase</span>
+      <span class="chip">SQL</span><span class="chip">NoSQL</span><span class="chip">MySQL</span><span class="chip">Oracle</span><span class="chip">PostgreSQL</span><span class="chip">MongoDB</span><span class="chip">H2</span><span class="chip">Supabase</span>
     </div></div>
     <div class="skill-cat"><h4>Styling</h4><div class="chip-row">
       <span class="chip">Tailwind CSS</span><span class="chip">Bootstrap</span><span class="chip">CSS</span><span class="chip">SCSS</span>
@@ -1011,7 +1016,7 @@ footer .heart{color:var(--accent-3);}
       <a class="icon-link" href="https://linkedin.com/in/moleesh" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 11.02-4.12 2.06 2.06 0 01-.02 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
       </a>
-      <a class="icon-link" href="resume.pdf" target="_blank" rel="noopener" aria-label="Resume" title="Download Resume">
+      <a class="icon-link icon-link-highlight" href="resume.pdf" target="_blank" rel="noopener" aria-label="Resume" title="Download Resume">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9.5 15.5L12 18l2.5-2.5"/></svg>
       </a>
     </div>
