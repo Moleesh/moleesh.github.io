@@ -1,1 +1,831 @@
-Hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Moleesh — Senior Software Engineer & AI Generalist</title>
+<meta name="description" content="Portfolio of A Moleesh — Senior Software Engineer & AI Generalist. Full stack, React, Java/Spring, AI agents.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070a10;
+  --bg2:#0b0f18;
+  --panel:#0e1420;
+  --panel-2:#111927;
+  --border:#1c2740;
+  --border-bright:#2a3b5e;
+  --text:#e7edf7;
+  --text-dim:#9fb0c9;
+  --text-faint:#5f7291;
+  --accent:#39ffc7;
+  --accent-2:#54a8ff;
+  --accent-3:#ff7a45;
+  --accent-glow:rgba(57,255,199,0.35);
+  --danger:#ff5d7e;
+  --radius:14px;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+  --sans:'Space Grotesk', system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  overflow-x:hidden;
+  min-height:100vh;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(57,255,199,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,199,0.035) 1px, transparent 1px);
+  background-size:42px 42px;
+  pointer-events:none;
+  z-index:0;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 100%);
+}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+#circuit-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.55;}
+
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--accent);color:#00140f;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:8px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent-2);}
+
+.wrap{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 24px;}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  backdrop-filter:blur(14px) saturate(140%);
+  background:rgba(7,10,16,0.65);
+  border-bottom:1px solid var(--border);
+  transition:border-color .3s;
+}
+.nav-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{
+  font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:0.5px;
+  display:flex;align-items:center;gap:8px;color:var(--text);
+}
+.logo .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+.nav-links{display:flex;gap:28px;font-family:var(--mono);font-size:13px;}
+.nav-links a{color:var(--text-dim);position:relative;padding:4px 0;transition:color .2s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .25s;}
+.nav-links a:hover::after{width:100%;}
+.nav-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--accent);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px;}
+.hamburger span{width:22px;height:2px;background:var(--text);display:block;}
+
+/* ---------- HERO ---------- */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;position:relative;}
+.hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:center;width:100%;}
+.eyebrow{
+  font-family:var(--mono);font-size:13px;color:var(--accent);
+  border:1px solid var(--border-bright);display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:100px;margin-bottom:24px;background:rgba(57,255,199,0.05);
+  animation:fadeUp .7s ease both;
+}
+.eyebrow::before{content:"●";font-size:8px;color:var(--accent);animation:blink 1.6s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+h1.title{
+  font-size:clamp(2.4rem,5.5vw,4.4rem);
+  font-weight:700;line-height:1.05;letter-spacing:-0.02em;
+  margin-bottom:20px;
+  animation:fadeUp .7s ease .1s both;
+}
+h1.title .accent-word{
+  background:linear-gradient(120deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.subtitle{
+  font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--text-dim);max-width:560px;line-height:1.6;margin-bottom:14px;
+  animation:fadeUp .7s ease .2s both;
+}
+.typewriter-line{
+  font-family:var(--mono);font-size:15px;color:var(--accent-2);margin-bottom:32px;min-height:22px;
+  animation:fadeUp .7s ease .3s both;
+}
+.typewriter-line .cursor{display:inline-block;width:8px;background:var(--accent-2);margin-left:2px;animation:cursorBlink 1s step-end infinite;}
+@keyframes cursorBlink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .7s ease .4s both;}
+
+.btn{
+  font-family:var(--mono);font-size:13px;font-weight:500;
+  padding:13px 24px;border-radius:9px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid transparent;transition:all .25s cubic-bezier(.2,.8,.2,1);
+  position:relative;overflow:hidden;
+}
+.btn-primary{background:var(--accent);color:#00140f;box-shadow:0 0 0 rgba(57,255,199,0);}
+.btn-primary:hover{box-shadow:0 0 28px var(--accent-glow);transform:translateY(-2px);}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--border-bright);}
+.btn-ghost:hover{border-color:var(--accent-2);color:var(--accent-2);transform:translateY(-2px);background:rgba(84,168,255,0.06);}
+.btn svg{width:15px;height:15px;flex-shrink:0;}
+
+/* Hero circuit card */
+.hero-card{
+  border:1px solid var(--border-bright);border-radius:var(--radius);
+  background:linear-gradient(160deg,var(--panel),var(--panel-2));
+  padding:22px;font-family:var(--mono);font-size:12.5px;position:relative;
+  box-shadow:0 20px 60px -20px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.02);
+  animation:fadeUp .8s ease .3s both, floaty 6s ease-in-out infinite;
+}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-card::before{content:"";position:absolute;top:0;left:22px;right:22px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0.6;}
+.card-dots{display:flex;gap:6px;margin-bottom:14px;}
+.card-dots span{width:9px;height:9px;border-radius:50%;background:var(--border-bright);}
+.card-dots span:nth-child(1){background:var(--accent-3);}
+.card-dots span:nth-child(2){background:#ffd166;}
+.card-dots span:nth-child(3){background:var(--accent);}
+.card-line{color:var(--text-dim);margin-bottom:6px;white-space:pre;}
+.card-line .key{color:var(--accent-2);}
+.card-line .str{color:var(--accent);}
+.card-line .com{color:var(--text-faint);}
+
+/* ---------- SECTION SHELL ---------- */
+section{padding:100px 0;position:relative;}
+.section-head{margin-bottom:52px;}
+.section-tag{font-family:var(--mono);font-size:12.5px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.section-tag::before{content:"";width:24px;height:1px;background:var(--accent);}
+.section-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-0.01em;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ---------- ABOUT / STATS ---------- */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+.about-text p{color:var(--text-dim);line-height:1.8;margin-bottom:18px;font-size:15.5px;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.stat-card{
+  border:1px solid var(--border);border-radius:12px;padding:22px;background:var(--panel);
+  transition:border-color .3s,transform .3s;
+}
+.stat-card:hover{border-color:var(--accent);transform:translateY(-4px);}
+.stat-num{font-family:var(--mono);font-size:2.1rem;font-weight:700;color:var(--accent);line-height:1;}
+.stat-label{font-size:12.5px;color:var(--text-faint);margin-top:8px;font-family:var(--mono);}
+
+/* ---------- TIMELINE ---------- */
+.timeline{position:relative;padding-left:32px;}
+.timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--accent),var(--border) 90%);}
+.tl-item{position:relative;padding-bottom:44px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-dot{position:absolute;left:-32px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 0 4px rgba(57,255,199,0.08);}
+.tl-date{font-family:var(--mono);font-size:12px;color:var(--accent-2);margin-bottom:6px;}
+.tl-role{font-size:1.15rem;font-weight:600;margin-bottom:2px;}
+.tl-org{color:var(--accent);font-size:13.5px;font-weight:500;margin-bottom:2px;}
+.tl-proj{color:var(--text-faint);font-size:13px;font-style:italic;margin-bottom:10px;}
+.tl-desc{color:var(--text-dim);font-size:14.5px;line-height:1.7;}
+.tl-desc li{margin-bottom:6px;list-style:none;padding-left:16px;position:relative;}
+.tl-desc li::before{content:"▸";position:absolute;left:0;color:var(--accent-2);}
+
+/* ---------- SKILLS ---------- */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
+.skill-cat{border:1px solid var(--border);border-radius:12px;padding:20px;background:var(--panel);transition:transform .3s, border-color .3s;}
+.skill-cat:hover{transform:translateY(-4px);border-color:var(--border-bright);}
+.skill-cat h4{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-3);margin-bottom:14px;}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  font-family:var(--mono);font-size:12px;padding:6px 11px;border-radius:7px;
+  background:var(--panel-2);border:1px solid var(--border);color:var(--text-dim);
+  transition:all .2s;
+}
+.chip:hover{color:var(--accent);border-color:var(--accent);background:rgba(57,255,199,0.06);transform:scale(1.05);}
+
+/* ---------- PROJECTS ---------- */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;}
+.project-card{
+  border:1px solid var(--border);border-radius:var(--radius);padding:26px;background:var(--panel);
+  position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, box-shadow .35s;
+  display:flex;flex-direction:column;
+}
+.project-card::before{
+  content:"";position:absolute;inset:0;border-radius:var(--radius);padding:1px;
+  background:linear-gradient(140deg,var(--accent),transparent 40%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s;
+}
+.project-card:hover{transform:translateY(-6px);box-shadow:0 24px 48px -20px rgba(0,0,0,0.55);}
+.project-card:hover::before{opacity:1;}
+.project-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.project-name{font-size:1.25rem;font-weight:700;}
+.project-links{display:flex;gap:10px;}
+.project-links a{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);transition:all .2s;
+}
+.project-links a:hover{border-color:var(--accent);color:var(--accent);background:rgba(57,255,199,0.08);}
+.project-links svg{width:15px;height:15px;}
+.project-desc{color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:16px;flex-grow:1;}
+.project-desc li{list-style:none;margin-bottom:8px;padding-left:16px;position:relative;}
+.project-desc li::before{content:"//";position:absolute;left:0;color:var(--accent-2);font-size:12px;}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;}
+.tag-row span{font-family:var(--mono);font-size:11px;color:var(--text-faint);background:var(--panel-2);padding:4px 9px;border-radius:6px;border:1px solid var(--border);}
+
+/* ---------- GITHUB REPOS ---------- */
+.gh-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:14px;}
+.gh-search{
+  font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--border);
+  color:var(--text);padding:10px 14px;border-radius:8px;width:260px;outline:none;transition:border-color .2s;
+}
+.gh-search:focus{border-color:var(--accent);}
+.repo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;min-height:120px;}
+.repo-card{
+  border:1px solid var(--border);border-radius:12px;padding:18px;background:var(--panel);
+  transition:transform .25s, border-color .25s;cursor:pointer;
+}
+.repo-card:hover{transform:translateY(-3px);border-color:var(--accent-2);}
+.repo-name{font-family:var(--mono);font-weight:600;font-size:14px;color:var(--accent-2);margin-bottom:6px;display:flex;align-items:center;gap:6px;word-break:break-all;}
+.repo-desc{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin-bottom:14px;min-height:36px;}
+.repo-meta{display:flex;gap:14px;font-family:var(--mono);font-size:11.5px;color:var(--text-faint);align-items:center;}
+.repo-meta span{display:flex;align-items:center;gap:4px;}
+.lang-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.gh-loading{font-family:var(--mono);color:var(--text-faint);font-size:13px;text-align:center;padding:40px 0;grid-column:1/-1;}
+.gh-loading .spin{display:inline-block;width:14px;height:14px;border:2px solid var(--border-bright);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin-right:8px;vertical-align:-2px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gh-footer-link{text-align:center;margin-top:30px;}
+
+/* ---------- CONTACT ---------- */
+.contact-panel{
+  border:1px solid var(--border-bright);border-radius:20px;padding:60px 40px;text-align:center;
+  background:radial-gradient(ellipse at top, rgba(57,255,199,0.06), transparent 60%), var(--panel);
+  position:relative;overflow:hidden;
+}
+.contact-panel h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:16px;}
+.contact-panel p{color:var(--text-dim);max-width:520px;margin:0 auto 32px;font-size:15.5px;}
+.contact-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+.icon-link{
+  width:52px;height:52px;border-radius:12px;border:1px solid var(--border-bright);
+  display:flex;align-items:center;justify-content:center;color:var(--text-dim);
+  transition:all .25s;background:var(--panel-2);
+}
+.icon-link:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-4px);box-shadow:0 10px 24px -8px var(--accent-glow);}
+.icon-link svg{width:22px;height:22px;}
+
+footer{padding:36px 0;border-top:1px solid var(--border);text-align:center;}
+footer p{font-family:var(--mono);font-size:12px;color:var(--text-faint);}
+footer .heart{color:var(--accent-3);}
+
+/* Back to top */
+#toTop{
+  position:fixed;bottom:26px;right:26px;width:46px;height:46px;border-radius:50%;
+  background:var(--panel);border:1px solid var(--border-bright);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:90;
+  opacity:0;pointer-events:none;transition:all .3s;
+}
+#toTop.show{opacity:1;pointer-events:auto;}
+#toTop:hover{background:var(--accent);color:#00140f;}
+
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-card{order:-1;}
+  .about-grid{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
+@media (max-width:520px){
+  section{padding:70px 0;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .gh-search{width:100%;}
+}
+</style>
+</head>
+<body>
+<canvas id="circuit-canvas"></canvas>
+<div class="noise"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo"><span class="dot"></span>A.MOLEESH</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#repos">Repos</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-status"><span id="clock">--:--:--</span></div>
+    <button class="hamburger" id="hamburger" aria-label="menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Open to Senior / Lead roles</div>
+      <h1 class="title">Building software that <span class="accent-word">grounds itself</span> in real code.</h1>
+      <p class="subtitle">Senior Software Engineer &amp; AI Generalist — 9.7 years across the full stack. Frontend-deep on React/ExtJS, Java/Spring backends, and production AI agents wired into real engineering workflows.</p>
+      <div class="typewriter-line"><span id="typewriter"></span><span class="cursor">&nbsp;</span></div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+          View Resume
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/moleesh" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 0 1 6 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg>
+          GitHub Profile
+        </a>
+        <a class="btn btn-ghost" href="#contact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          Contact Me
+        </a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="card-dots"><span></span><span></span><span></span></div>
+      <div class="card-line com">// engineer.json</div>
+      <div class="card-line">{</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"name"</span>: <span class="str">"A Moleesh"</span>,</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"role"</span>: <span class="str">"Module Lead"</span>,</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"experience"</span>: <span class="str">"9.7 yrs"</span>,</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"stack"</span>: [<span class="str">"React"</span>, <span class="str">"Java"</span>,</div>
+      <div class="card-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Spring"</span>, <span class="str">"AI Agents"</span>],</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"shipped_solo"</span>: <span class="str">4</span>,</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"location"</span>: <span class="str">"Bangalore / Hosur"</span>,</div>
+      <div class="card-line">&nbsp;&nbsp;<span class="key">"status"</span>: <span class="str">"available"</span></div>
+      <div class="card-line">}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-head reveal">
+    <div class="section-tag">01 · About</div>
+    <h2 class="section-title">Full-stack depth, one skillset.</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a Senior Software Engineer and AI Generalist with 9.7 years across the stack — frontend-deep in React and ExtJS, backed by Java/Spring Boot systems, with AI/ML tooling and CI/CD treated as one skillset rather than four separate specialties.</p>
+      <p>Currently Module Lead owning frontend architecture on an enterprise transportation management platform at Saksoft, driving a React 19/Redux modernization through an Oracle-to-PostgreSQL migration — while also building production AI agents (KIMMY) that ground their output in real source code across enterprise systems.</p>
+      <p>Outside work, I ship complete products solo: BabuScales runs live quarry weighbridge operations in production, and three more (HireWise, FirstDay, VaultBill) went from first commit to public release, deployed through my own CI/CD pipelines.</p>
+    </div>
+    <div class="stat-grid reveal">
+      <div class="stat-card"><div class="stat-num" data-count="9.7">0</div><div class="stat-label">YEARS EXPERIENCE</div></div>
+      <div class="stat-card"><div class="stat-num" data-count="4">0</div><div class="stat-label">PRODUCTS SHIPPED SOLO</div></div>
+      <div class="stat-card"><div class="stat-num" data-count="3">0</div><div class="stat-label">COMPANIES</div></div>
+      <div class="stat-card"><div class="stat-num" data-count="1">0</div><div class="stat-label">COMMERCIAL PRODUCT LIVE</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-head reveal">
+    <div class="section-tag">02 · Experience</div>
+    <h2 class="section-title">Where I've built things.</h2>
+  </div>
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">APR 2021 — PRESENT · 5.4 YRS</div>
+      <div class="tl-role">Module Lead</div>
+      <div class="tl-org">Saksoft Limited (formerly DreamOrbit)</div>
+      <div class="tl-proj">Infios / MercuryGate — Transportation Management System</div>
+      <ul class="tl-desc">
+        <li>Lead frontend work on a Java 17/Spring/Maven TMS monolith (GridGain distributed compute, in-flight Oracle→PostgreSQL migration): shipping React 19/Redux pages — now migrating to TanStack Query and an internal Fabric design system — beside legacy ExtJS 4.2 portlets.</li>
+        <li>Extended the Google Maps API for client-specific routing rules — drew strong client feedback.</li>
+        <li>Untangled React/Redux flyout logic and selectors (Immutable.js); wrote Jest suites covering Java services, debounce/race-condition logic, and React hooks.</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">OCT 2019 — APR 2021 · 1.5 YRS</div>
+      <div class="tl-role">Member Technical Staff</div>
+      <div class="tl-org">Zoho Corporation</div>
+      <div class="tl-proj">Zoho CRM</div>
+      <ul class="tl-desc">
+        <li>Worked across nearly every core module of Zoho CRM, built on Java, HTML5, JavaScript, MySQL, PostgreSQL, and Handlebars.js.</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">JAN 2017 — OCT 2019 · 2.8 YRS · ATLANTA, US</div>
+      <div class="tl-role">Senior Software Engineer, CTO</div>
+      <div class="tl-org">Mindtree Limited</div>
+      <div class="tl-proj">Commercial MDS, Equifax Inc. · Interaction Suite</div>
+      <ul class="tl-desc">
+        <li>Delivered across a large enterprise consumer-credit codebase (C++, Java, Spring, SOAP, MySQL, Greenplum) and built the Jenkins deployment pipeline from scratch — recognized by the team for the time it saved.</li>
+        <li>Built Interaction Suite from the ground up (React, Node.js, MongoDB), from design through deployment, with cloud POCs on Azure and AWS S3.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- AI ENGINEERING HIGHLIGHT -->
+<section id="ai">
+  <div class="section-head reveal">
+    <div class="section-tag">03 · AI Engineering</div>
+    <h2 class="section-title">KIMMY — code-grounded estimation agent.</h2>
+  </div>
+  <div class="project-card reveal" style="max-width:100%;">
+    <div class="project-desc" style="font-size:15px;">
+      <ul>
+        <li>Headless, sandboxed agent engine automating SWAG estimation and feasibility analysis, reading two production codebases so every estimate is grounded in real code.</li>
+        <li>Wired into four enterprise systems: team chat (OAuth2 + PKCE, headless token refresh), work-tracking (relation-graph traversal, scoped writes), source control (code grounding), and observability.</li>
+        <li>Every tool designed least-privilege — higher-risk write/admin capabilities explicitly disabled — isolated in its own sandboxed runtime with no dependence on the host machine's personal setup.</li>
+        <li>LLM work also ships publicly: HireWise's candidate-ranking pipeline calls the Claude AI API directly for automated match scoring.</li>
+      </ul>
+    </div>
+    <div class="tag-row"><span>Claude AI API</span><span>MCP</span><span>Multi-agent systems</span><span>OAuth2+PKCE</span><span>Least-privilege design</span></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-head reveal">
+    <div class="section-tag">04 · Skills</div>
+    <h2 class="section-title">Toolbox.</h2>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-cat"><h4>Languages</h4><div class="chip-row">
+      <span class="chip">Java</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">Python</span><span class="chip">C</span><span class="chip">C++</span><span class="chip">HTML</span>
+    </div></div>
+    <div class="skill-cat"><h4>Frameworks</h4><div class="chip-row">
+      <span class="chip">Spring Boot</span><span class="chip">Spring MVC</span><span class="chip">Hibernate</span><span class="chip">JPA</span><span class="chip">React 19</span><span class="chip">Next.js</span><span class="chip">AngularJS</span><span class="chip">ExtJS</span><span class="chip">NodeJS</span>
+    </div></div>
+    <div class="skill-cat"><h4>AI / ML</h4><div class="chip-row">
+      <span class="chip">Claude AI API</span><span class="chip">OpenAI Codex</span><span class="chip">Cursor</span><span class="chip">GitHub Copilot</span><span class="chip">MCP</span><span class="chip">Multi-agent systems</span><span class="chip">Prompt engineering</span>
+    </div></div>
+    <div class="skill-cat"><h4>Databases</h4><div class="chip-row">
+      <span class="chip">MySQL</span><span class="chip">Oracle</span><span class="chip">PostgreSQL</span><span class="chip">MongoDB</span><span class="chip">H2</span><span class="chip">Supabase</span>
+    </div></div>
+    <div class="skill-cat"><h4>Styling</h4><div class="chip-row">
+      <span class="chip">Tailwind CSS</span><span class="chip">Bootstrap</span><span class="chip">CSS</span><span class="chip">SCSS</span>
+    </div></div>
+    <div class="skill-cat"><h4>CI/CD &amp; VCS</h4><div class="chip-row">
+      <span class="chip">GitHub Actions</span><span class="chip">Jenkins</span><span class="chip">Git</span><span class="chip">SVN</span><span class="chip">Maven</span><span class="chip">Vite</span><span class="chip">Turborepo</span>
+    </div></div>
+    <div class="skill-cat"><h4>APIs &amp; Testing</h4><div class="chip-row">
+      <span class="chip">REST</span><span class="chip">SOAP</span><span class="chip">Google Maps API</span><span class="chip">Playwright</span><span class="chip">Vitest</span><span class="chip">Postman</span>
+    </div></div>
+    <div class="skill-cat"><h4>Cloud &amp; Infra</h4><div class="chip-row">
+      <span class="chip">Docker</span><span class="chip">AWS S3</span><span class="chip">Azure</span><span class="chip">Unix Shell</span><span class="chip">Jira</span><span class="chip">Azure DevOps</span>
+    </div></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-head reveal">
+    <div class="section-tag">05 · Featured Work</div>
+    <h2 class="section-title">Products shipped end-to-end.</h2>
+  </div>
+  <div class="project-grid reveal">
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">BabuScales</div>
+        <div class="project-links">
+          <a href="https://github.com/moleesh/BabuScales" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 0 1 6 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg></a>
+        </div>
+      </div>
+      <div class="project-desc">
+        <ul>
+          <li>Weighbridge platform, v1→v3. Commercial release (2026) shipped for Babulens on Tauri v2/Rust, React 19/TypeScript, SQLite.</li>
+          <li>Stability-gated multi-lorry weighing, photographic capture, hash-chained tamper-evident audit trail with public QR verification.</li>
+          <li>Multi-printer output, offline-first Ed25519-signed licensing, bilingual English/Tamil UI.</li>
+        </ul>
+      </div>
+      <div class="tag-row"><span>Tauri v2</span><span>Rust</span><span>React 19</span><span>SQLite</span></div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">HireWise</div>
+        <div class="project-links">
+          <a href="https://github.com/moleesh/HireWise" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 0 1 6 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg></a>
+        </div>
+      </div>
+      <div class="project-desc">
+        <ul>
+          <li>AI-powered recruiting platform covering the hiring pipeline end-to-end — job posting through candidate ranking.</li>
+          <li>Ranking driven by the Claude AI API, plus Excel-ready reporting, an analytics dashboard, role-based admin.</li>
+          <li>CI/CD deploys to GitHub Pages on every push to main.</li>
+        </ul>
+      </div>
+      <div class="tag-row"><span>React 19</span><span>Vite</span><span>Supabase</span><span>Claude API</span></div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">FirstDay</div>
+        <div class="project-links">
+          <a href="https://github.com/moleesh/FirstDay" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 0 1 6 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg></a>
+        </div>
+      </div>
+      <div class="project-desc">
+        <ul>
+          <li>Employee onboarding platform built as a Turborepo/pnpm monorepo with shared config, Zod schemas, UI packages.</li>
+          <li>Recruiters assemble reusable onboarding packs and map PDF fields; joinees upload, e-sign, and download completed packs.</li>
+          <li>Supabase auth with role-aware login flows.</li>
+        </ul>
+      </div>
+      <div class="tag-row"><span>Next.js 16</span><span>Zustand</span><span>TanStack Query</span><span>Turborepo</span></div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">VaultBill</div>
+        <div class="project-links">
+          <a href="https://github.com/moleesh/VaultBill" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 0 1 6 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg></a>
+        </div>
+      </div>
+      <div class="project-desc">
+        <ul>
+          <li>Offline-first billing/invoicing workspace for GST workflows — browser demo plus Electron desktop for Windows/Linux.</li>
+          <li>Custom document/template designer with print-ready layouts, PDF export, role-based access control.</li>
+          <li>Automated release pipeline builds Windows/Linux artifacts on every push and tag, publishing to GitHub Releases.</li>
+        </ul>
+      </div>
+      <div class="tag-row"><span>React</span><span>Electron</span><span>TanStack Query</span><span>SQLite</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIVE GITHUB REPOS -->
+<section id="repos">
+  <div class="section-head reveal">
+    <div class="section-tag">06 · Quick Actions</div>
+    <h2 class="section-title">Live from GitHub.</h2>
+  </div>
+  <div class="gh-controls reveal">
+    <input type="text" class="gh-search" id="repoSearch" placeholder="&#x1F50D; filter repositories...">
+    <a class="btn btn-ghost" href="https://github.com/moleesh?tab=repositories" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+      All Repositories
+    </a>
+  </div>
+  <div class="repo-grid reveal" id="repoGrid">
+    <div class="gh-loading"><span class="spin"></span>Fetching repositories from github.com/moleesh…</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-panel reveal">
+    <h2>Let's build something.</h2>
+    <p>Open to Senior / Lead Engineering roles and interesting AI-engineering problems. Based in Bangalore / Hosur — happy to talk remote or relocation.</p>
+    <div class="contact-links">
+      <a class="icon-link" href="mailto:moleesh1@gmail.com" aria-label="Email" title="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+      </a>
+      <a class="icon-link" href="tel:+918903957007" aria-label="Phone" title="+91 89039 57007">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      </a>
+      <a class="icon-link" href="https://github.com/moleesh" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 016 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg>
+      </a>
+      <a class="icon-link" href="https://linkedin.com/in/moleesh" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 11.02-4.12 2.06 2.06 0 01-.02 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+      </a>
+      <a class="icon-link" href="resume.pdf" target="_blank" rel="noopener" aria-label="Resume" title="Download Resume">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9.5 15.5L12 18l2.5-2.5"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>Designed &amp; built by A Moleesh — running on <span class="heart">&#9889;</span> and GitHub Pages · <span id="year"></span></p>
+</footer>
+
+<button id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* -------- clock -------- */
+function tick(){
+  const d = new Date();
+  document.getElementById('clock').textContent = d.toLocaleTimeString('en-GB',{hour12:false});
+}
+tick(); setInterval(tick,1000);
+
+/* -------- typewriter -------- */
+const phrases = [
+  "Module Lead @ Saksoft — React 19 / Redux on an enterprise TMS",
+  "Built KIMMY — a code-grounded AI estimation agent",
+  "Shipped BabuScales — live quarry weighbridge operations",
+  "9.7 years of full-stack + AI engineering"
+];
+let pIdx=0, cIdx=0, deleting=false;
+const twEl = document.getElementById('typewriter');
+function typeLoop(){
+  const current = phrases[pIdx];
+  if(!deleting){
+    cIdx++;
+    twEl.textContent = current.slice(0,cIdx);
+    if(cIdx === current.length){ deleting = true; setTimeout(typeLoop, 1800); return; }
+  } else {
+    cIdx--;
+    twEl.textContent = current.slice(0,cIdx);
+    if(cIdx === 0){ deleting = false; pIdx = (pIdx+1)%phrases.length; }
+  }
+  setTimeout(typeLoop, deleting ? 28 : 42);
+}
+typeLoop();
+
+/* -------- scroll reveal -------- */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); observer.unobserve(e.target); } });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* -------- animated stat counters -------- */
+const statObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el = e.target;
+      const target = parseFloat(el.dataset.count);
+      const isFloat = target % 1 !== 0;
+      let cur = 0;
+      const step = target / 40;
+      const iv = setInterval(()=>{
+        cur += step;
+        if(cur >= target){ cur = target; clearInterval(iv); }
+        el.textContent = isFloat ? cur.toFixed(1) : Math.floor(cur);
+      }, 25);
+      statObserver.unobserve(el);
+    }
+  });
+},{threshold:0.4});
+document.querySelectorAll('.stat-num').forEach(el=>statObserver.observe(el));
+
+/* -------- back to top + nav border on scroll -------- */
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', ()=>{
+  toTop.classList.toggle('show', window.scrollY > 500);
+});
+toTop.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+
+/* -------- mobile hamburger -------- */
+document.getElementById('hamburger').addEventListener('click', ()=>{
+  const links = document.querySelector('.nav-links');
+  const visible = links.style.display === 'flex';
+  links.style.display = visible ? 'none' : 'flex';
+  links.style.cssText += visible ? '' : 'position:fixed;top:60px;left:0;right:0;background:rgba(7,10,16,0.97);flex-direction:column;padding:20px 24px;border-bottom:1px solid var(--border);';
+});
+
+/* -------- circuit board animated background -------- */
+(function(){
+  const canvas = document.getElementById('circuit-canvas');
+  const ctx = canvas.getContext('2d');
+  let w,h,nodes=[],pulses=[];
+  function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=document.body.scrollHeight; }
+  window.addEventListener('resize', ()=>{ resize(); buildNodes(); });
+
+  function buildNodes(){
+    nodes = [];
+    const cols = Math.ceil(w/160)+1, rows = Math.ceil(h/160)+1;
+    for(let i=0;i<cols;i++){
+      for(let j=0;j<rows;j++){
+        if(Math.random() > 0.55) continue;
+        nodes.push({
+          x: i*160 + (Math.random()*60-30),
+          y: j*160 + (Math.random()*60-30),
+        });
+      }
+    }
+    pulses = [];
+    for(let i=0;i<14;i++){
+      spawnPulse();
+    }
+  }
+  function nearest(node, count){
+    return nodes.filter(n=>n!==node).map(n=>({n,d:Math.hypot(n.x-node.x,n.y-node.y)})).sort((a,b)=>a.d-b.d).slice(0,count).map(o=>o.n);
+  }
+  let edgeCache = null;
+  function buildEdges(){
+    edgeCache = [];
+    nodes.forEach(node=>{
+      nearest(node,2).forEach(n2=>{
+        edgeCache.push([node,n2]);
+      });
+    });
+  }
+  function spawnPulse(){
+    if(!edgeCache || edgeCache.length===0) return;
+    const edge = edgeCache[Math.floor(Math.random()*edgeCache.length)];
+    pulses.push({ a:edge[0], b:edge[1], t:0, speed: 0.004 + Math.random()*0.006, color: Math.random()>0.5 ? '57,255,199' : '84,168,255' });
+  }
+
+  resize(); buildNodes(); buildEdges();
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle = 'rgba(57,255,199,0.06)';
+    ctx.lineWidth = 1;
+    edgeCache.forEach(([a,b])=>{
+      ctx.beginPath();
+      ctx.moveTo(a.x,a.y);
+      ctx.lineTo(b.x,b.y);
+      ctx.stroke();
+    });
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,2,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(57,255,199,0.15)';
+      ctx.fill();
+    });
+    pulses.forEach(p=>{
+      p.t += p.speed;
+      const x = p.a.x + (p.b.x-p.a.x)*p.t;
+      const y = p.a.y + (p.b.y-p.a.y)*p.t;
+      const grad = ctx.createRadialGradient(x,y,0,x,y,6);
+      grad.addColorStop(0, `rgba(${p.color},0.9)`);
+      grad.addColorStop(1, `rgba(${p.color},0)`);
+      ctx.beginPath();
+      ctx.arc(x,y,6,0,Math.PI*2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    });
+    pulses = pulses.filter(p=>p.t < 1);
+    while(pulses.length < 14) spawnPulse();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* -------- GitHub repos fetch -------- */
+const GH_USER = 'moleesh';
+const langColors = {
+  JavaScript:'#f1e05a', TypeScript:'#3178c6', Python:'#3572A5', Java:'#b07219',
+  HTML:'#e34c26', CSS:'#563d7c', Rust:'#dea584', 'C++':'#f34b7d', C:'#555555',
+  SCSS:'#c6538c', Shell:'#89e051', Vue:'#41b883'
+};
+let allRepos = [];
+
+function repoCardHTML(r){
+  const lang = r.language || 'Other';
+  const color = langColors[lang] || '#6b7a99';
+  const updated = new Date(r.pushed_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  return `<div class="repo-card" onclick="window.open('${r.html_url}','_blank')">
+    <div class="repo-name">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.42 3.44 10.02 8.2 11.65.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.74-4.04-1.64-4.04-1.64-.55-1.42-1.33-1.8-1.33-1.8-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.87 2.81 1.33 3.5 1.02.1-.79.42-1.33.76-1.64-2.66-.31-5.47-1.36-5.47-6.05 0-1.34.46-2.43 1.23-3.29-.12-.31-.53-1.57.12-3.27 0 0 1-.33 3.3 1.25a11.2 11.2 0 0 1 6 0c2.28-1.58 3.29-1.25 3.29-1.25.65 1.7.24 2.96.12 3.27.77.86 1.23 1.95 1.23 3.29 0 4.7-2.81 5.74-5.49 6.04.43.38.81 1.13.81 2.29 0 1.65-.02 2.98-.02 3.39 0 .33.22.72.83.6C20.57 22.31 24 17.72 24 12.3 24 5.5 18.63 0 12 0z"/></svg>
+      ${r.name}
+    </div>
+    <div class="repo-desc">${r.description ? r.description.replace(/</g,'&lt;') : 'No description provided.'}</div>
+    <div class="repo-meta">
+      <span><span class="lang-dot" style="background:${color}"></span>${lang}</span>
+      <span>&#9733; ${r.stargazers_count}</span>
+      <span>&#8942; ${r.forks_count}</span>
+      <span>${updated}</span>
+    </div>
+  </div>`;
+}
+
+function renderRepos(list){
+  const grid = document.getElementById('repoGrid');
+  if(list.length === 0){
+    grid.innerHTML = '<div class="gh-loading">No repositories match that filter.</div>';
+    return;
+  }
+  grid.innerHTML = list.map(repoCardHTML).join('');
+}
+
+fetch(`https://api.github.com/users/${GH_USER}/repos?sort=pushed&per_page=100`)
+  .then(res => { if(!res.ok) throw new Error('GitHub API error'); return res.json(); })
+  .then(data => {
+    allRepos = data.filter(r=>!r.fork).sort((a,b)=> new Date(b.pushed_at)-new Date(a.pushed_at));
+    if(allRepos.length === 0){ allRepos = data; }
+    renderRepos(allRepos.slice(0,12));
+  })
+  .catch(err => {
+    document.getElementById('repoGrid').innerHTML =
+      `<div class="gh-loading">Couldn't reach the GitHub API right now. <a href="https://github.com/${GH_USER}?tab=repositories" target="_blank" style="color:var(--accent)">Browse repositories directly →</a></div>`;
+  });
+
+document.getElementById('repoSearch').addEventListener('input', (e)=>{
+  const q = e.target.value.toLowerCase();
+  const filtered = allRepos.filter(r =>
+    r.name.toLowerCase().includes(q) ||
+    (r.description||'').toLowerCase().includes(q) ||
+    (r.language||'').toLowerCase().includes(q)
+  );
+  renderRepos(filtered.slice(0,24));
+});
+</script>
+</body>
+</html>
