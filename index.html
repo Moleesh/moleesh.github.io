@@ -626,9 +626,20 @@ footer .heart{color:var(--accent-3);}
 .chat-input-row button svg{width:16px;height:16px;}
 .msg a{color:inherit;font-weight:600;text-decoration:underline;}
 @media (max-width:520px){
-  #chatPanel{right:12px;left:12px;width:auto;bottom:140px;}
-  #chatToggle{right:16px;bottom:22px;}
-  #chatToggle.raised{bottom:78px;}
+  #chatPanel{right:12px;left:12px;width:auto;bottom:70px;}
+
+  /* Dock the floating chat/back-to-top circles into one bottom bar instead of
+     letting them float over content mid-page. */
+  #toTop,#chatToggle{
+    position:fixed;top:auto;left:0;right:0;bottom:0;
+    width:100%;height:56px;border-radius:0;
+    background:var(--panel-2);border-top:1px solid var(--border);
+    box-shadow:none;animation:none !important;
+  }
+  #toTop{left:0;right:50%;border-right:1px solid var(--border);opacity:1;pointer-events:auto;}
+  #chatToggle{left:50%;right:0;padding:0;}
+  #chatToggle.raised{bottom:0;}
+  #chatToggle svg{width:22px;height:22px;}
 }
 </style>
 </head>
@@ -1512,8 +1523,8 @@ if(!isTouch && !prefersReducedMotion){
   }, {passive:true});
   document.addEventListener('mouseleave', ()=>{ glow.classList.remove('active'); dot.classList.remove('active'); });
   function cursorFrame(){
-    gx += (tx-gx)*0.16; gy += (ty-gy)*0.16;
-    dx += (tx-dx)*0.5; dy += (ty-dy)*0.5;
+    gx += (tx-gx)*0.24; gy += (ty-gy)*0.24;
+    dx += (tx-dx)*0.65; dy += (ty-dy)*0.65;
     glow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%,-50%)`;
     dot.style.transform = `translate(${dx}px, ${dy}px) translate(-50%,-50%)`;
     if(Math.abs(tx-gx) > 0.3 || Math.abs(ty-gy) > 0.3){ requestAnimationFrame(cursorFrame); }

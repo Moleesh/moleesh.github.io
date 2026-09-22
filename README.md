@@ -1,42 +1,48 @@
-# moleesh.github.io
+# Hi, I'm A Moleesh
 
-Personal portfolio site for **A Moleesh** — Senior Software Engineer & AI Generalist.
+Senior Software Engineer & AI Generalist based in Bangalore / Hosur, India — 9.7 years across the full stack.
 
-Live at: https://moleesh.github.io
+Portfolio: https://moleesh.github.io
 
-## What's here
+## What I do
 
-A single-page, static HTML/CSS/JS site (no build step, no framework) covering:
+Frontend-deep on React and ExtJS, Java/Spring backends, and shipping AI-assisted tooling into production rather than
+just prototyping it. I like taking a product from a rough idea to something real users depend on — weighbridge
+software, recruiting platforms, internal agent tooling — end to end.
 
-- Hero intro with a typewriter tagline and animated circuit-board canvas background
-- About, experience timeline, AI engineering highlight (KIMMY), and skills
-- Featured projects (BabuScales, HireWise, FirstDay, VaultBill)
-- **Live GitHub repositories**, fetched client-side from the GitHub REST API (`/users/moleesh/repos`) with search/filter
-- Resume ([resume.pdf](resume.pdf)) and contact links (email, phone, GitHub, LinkedIn)
+## Experience
 
-## Stack
+- **Saksoft Limited (formerly DreamOrbit)** — Module Lead, Apr 2021–Present (5.4 yrs)
+  Leading frontend on Infios/MercuryGate, a Java 17/Spring TMS monolith — shipping React 19/Redux, migrating
+  Oracle → PostgreSQL, and extending the Google Maps API for client routing.
+- **Zoho Corporation** — Member Technical Staff, Oct 2019–Apr 2021 (1.5 yrs)
+  Worked across nearly every core module of Zoho CRM (Java, HTML5, JS, MySQL, PostgreSQL, Handlebars.js).
 
-Plain HTML5, CSS3 (custom properties, no framework), and vanilla JS. Fonts via Google Fonts (Space Grotesk, JetBrains Mono).
+## Side projects
 
-## Deployment
+- **BabuScales** — a weighbridge platform (v1→v3), commercially released, shipped for Balvatons on Tauri v2/Rust,
+  React 19/TypeScript, SQLite — stability-gated multi-lorry weighing, photographic capture, hash-chained
+  tamper-evident audit trail with public QR verification, multi-printer output, offline-first Ed25519-signed
+  licensing, bilingual English/Tamil UI.
+- **HireWise** — an AI-powered recruiting platform covering the hiring pipeline end to end, from job posting through
+  candidate ranking, with Claude API-driven ranking and an Excel-ready reporting/analytics dashboard.
 
-Deployed via GitHub Actions (`.github/workflows/deploy.yml`) using the official Pages actions
-(`actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`) — every push to
-`master` rebuilds and republishes the site. No Jekyll processing (`.nojekyll` present); files ship as-is.
+## Elsewhere
 
-Repo Settings → Pages → Source must be set to **GitHub Actions** for the workflow to publish.
+- GitHub: https://github.com/moleesh
+- LinkedIn: https://linkedin.com/in/moleesh
+- Resume: [resume.pdf](resume.pdf)
+- Email: moleesh1@gmail.com
 
-## Local preview
+## About this repo
 
-Any static file server works, e.g.:
+This is the source for my portfolio site — a single-page static HTML/CSS/JS build (no framework, no build step),
+deployed via GitHub Actions to GitHub Pages on every push to `master`.
+
+Local preview:
 
 ```bash
-python -m http.server 8080
+py -m http.server 8080
 ```
 
 Then open `http://localhost:8080`.
-
-## Updating the resume
-
-Replace [resume.pdf](resume.pdf) with the latest export and commit — the "View Resume" button and
-footer link point directly at that file.
