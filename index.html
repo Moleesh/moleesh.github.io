@@ -28,9 +28,30 @@
   --radius:14px;
   --mono:'JetBrains Mono', ui-monospace, monospace;
   --sans:'Space Grotesk', system-ui, sans-serif;
+  --nav-bg:rgba(7,10,16,0.65);
+  --grid-line:rgba(57,255,199,0.035);
+  color-scheme:dark;
 }
+html[data-theme="light"]{
+  --bg:#f4f6fb;
+  --bg2:#e9edf5;
+  --panel:#ffffff;
+  --panel-2:#f1f4fa;
+  --border:#dde3ef;
+  --border-bright:#c7d1e6;
+  --text:#141a24;
+  --text-dim:#4d5872;
+  --text-faint:#8290a8;
+  --accent-glow:rgba(20,150,120,0.25);
+  --nav-bg:rgba(244,246,251,0.75);
+  --grid-line:rgba(20,150,120,0.06);
+  color-scheme:light;
+}
+html[data-theme="light"] #circuit-canvas{opacity:0.18;}
+html[data-theme="light"] .blob{opacity:.25;}
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
+html.custom-cursor, html.custom-cursor *{cursor:none !important;}
 body{
   background:var(--bg);
   color:var(--text);
@@ -38,13 +59,14 @@ body{
   overflow-x:hidden;
   min-height:100vh;
   position:relative;
+  transition:background .3s ease, color .3s ease;
 }
 body::before{
   content:"";
   position:fixed;inset:0;
   background-image:
-    linear-gradient(rgba(57,255,199,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(57,255,199,0.035) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size:42px 42px;
   pointer-events:none;
   z-index:0;
@@ -70,9 +92,9 @@ a{color:inherit;text-decoration:none;}
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   backdrop-filter:blur(14px) saturate(140%);
-  background:rgba(7,10,16,0.65);
+  background:var(--nav-bg);
   border-bottom:1px solid var(--border);
-  transition:border-color .3s;
+  transition:border-color .3s, background .3s;
 }
 .nav-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
 .logo{
@@ -86,7 +108,13 @@ nav{
 .nav-links a:hover{color:var(--accent);}
 .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .25s;}
 .nav-links a:hover::after{width:100%;}
-.nav-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--accent);}
+.nav-status{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;color:var(--accent);}
+#themeToggle{
+  background:none;border:1px solid var(--border-bright);border-radius:8px;color:var(--text-dim);
+  cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  transition:color .2s,border-color .2s,transform .2s;
+}
+#themeToggle:hover{color:var(--accent);border-color:var(--accent);transform:rotate(15deg);}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px;}
 .hamburger span{width:22px;height:2px;background:var(--text);display:block;}
 
@@ -158,6 +186,7 @@ h1.title .accent-word{
 
 /* ---------- SECTION SHELL ---------- */
 section{padding:100px 0;position:relative;}
+section:not(#top):not(#about){content-visibility:auto;contain-intrinsic-size:1px 900px;}
 .section-head{margin-bottom:52px;}
 .section-tag{font-family:var(--mono);font-size:12.5px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
 .section-tag::before{content:"";width:24px;height:1px;background:var(--accent);}
@@ -203,6 +232,32 @@ section{padding:100px 0;position:relative;}
   transition:all .2s;
 }
 .chip:hover{color:var(--accent);border-color:var(--accent);background:rgba(57,255,199,0.06);transform:scale(1.05);}
+
+/* ---------- DOMAIN KNOWLEDGE ---------- */
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+.domain-card{
+  border:1px solid var(--border);border-radius:14px;padding:24px;background:var(--panel);
+  transition:transform .3s, border-color .3s, box-shadow .3s;position:relative;overflow:hidden;
+}
+.domain-card:hover{transform:translateY(-5px);border-color:var(--accent-2);box-shadow:0 16px 32px -14px rgba(84,168,255,0.25);}
+.domain-icon{font-size:26px;margin-bottom:12px;display:inline-block;}
+.domain-card h4{font-size:16px;font-weight:600;margin-bottom:8px;}
+.domain-card p{font-size:13.5px;color:var(--text-dim);line-height:1.6;}
+
+/* ---------- KEY ACHIEVEMENTS ---------- */
+.achv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+.achv-card{
+  border:1px solid var(--border);border-radius:14px;padding:22px 22px 22px 20px;background:var(--panel);
+  display:flex;gap:16px;align-items:flex-start;transition:transform .3s, border-color .3s;
+}
+.achv-card:hover{transform:translateY(-4px);border-color:var(--accent);}
+.achv-num{
+  font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);
+  background:rgba(57,255,199,0.08);border:1px solid var(--border-bright);border-radius:8px;
+  width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+}
+.achv-card p{font-size:13.5px;color:var(--text-dim);line-height:1.6;}
+.achv-card p b{color:var(--text);}
 
 /* ---------- PROJECTS ---------- */
 .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;}
@@ -378,10 +433,159 @@ footer .heart{color:var(--accent-3);}
   .nav-links{display:none;}
   .hamburger{display:flex;}
 }
+
+/* ---------- MOBILE: crazier than desktop (most viewers are on phones) ---------- */
+@media (max-width:900px) and (prefers-reduced-motion: no-preference){
+  h1.title .accent-word{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));
+    background-size:300% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:gradientSweep 4s linear infinite;
+  }
+  @keyframes gradientSweep{0%{background-position:0% 50%;}100%{background-position:300% 50%;}}
+
+  .blob-1,.blob-2,.blob-3{opacity:.4;}
+  .blob-1{animation-duration:11s;}
+  .blob-2{animation-duration:13s;}
+  .blob-3{animation-duration:15s;opacity:.24;}
+
+  .hero-card{animation:fadeUp .8s ease .3s both, floaty 4s ease-in-out infinite, borderPulse 3s ease-in-out infinite;}
+  @keyframes borderPulse{
+    0%,100%{box-shadow:0 20px 60px -20px rgba(57,255,199,0.25);border-color:var(--border-bright);}
+    50%{box-shadow:0 24px 70px -14px rgba(57,255,199,0.5);border-color:var(--accent);}
+  }
+
+  .section-tag::before{animation:tagGrow 2.4s ease-in-out infinite;}
+  @keyframes tagGrow{0%,100%{width:24px;opacity:.6;}50%{width:44px;opacity:1;}}
+
+  .domain-card,.achv-card,.project-card,.skill-cat,.stat-card{position:relative;overflow:hidden;}
+  .domain-card::after,.achv-card::after,.project-card::after,.stat-card::after{
+    content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,0.07),transparent);
+    animation:cardShimmer 5s ease-in-out infinite;
+  }
+  @keyframes cardShimmer{0%{left:-60%;}45%,100%{left:130%;}}
+
+  .stat-num{animation:numGlow 2.6s ease-in-out infinite;}
+  @keyframes numGlow{0%,100%{text-shadow:0 0 0 transparent;}50%{text-shadow:0 0 14px var(--accent-glow);}}
+
+  #chatToggle{animation:floaty 3s ease-in-out infinite, chatGlowPulse 2.4s ease-in-out infinite;}
+  @keyframes chatGlowPulse{0%,100%{box-shadow:0 10px 26px -6px var(--accent-glow);}50%{box-shadow:0 14px 38px -4px var(--accent-glow), 0 0 0 6px rgba(57,255,199,0.12);}}
+}
 @media (max-width:520px){
   section{padding:70px 0;}
   .stat-grid{grid-template-columns:1fr 1fr;}
   .gh-search{width:100%;}
+}
+
+/* ---------- CURSOR GLOW (lightweight, desktop-only) ---------- */
+#cursorGlow{
+  position:fixed;top:0;left:0;width:26px;height:26px;border-radius:50%;
+  pointer-events:none;z-index:9999;
+  background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  transform:translate(-50%,-50%);
+  will-change:transform;
+  opacity:0;transition:opacity .3s;
+}
+#cursorGlow.active{opacity:1;}
+#cursorDot{
+  position:fixed;top:0;left:0;width:5px;height:5px;border-radius:50%;
+  background:var(--accent);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);will-change:transform;
+  box-shadow:0 0 8px 1px var(--accent-glow);
+  opacity:0;transition:opacity .3s;
+}
+#cursorDot.active{opacity:1;}
+#cursorGlow.pointered,#cursorDot.pointered{background-color:var(--accent-2);}
+
+/* ---------- CHATBOT ---------- */
+#chatToggle{
+  position:fixed;bottom:90px;right:26px;width:52px;height:52px;border-radius:50%;
+  background:var(--accent);color:#00140f;border:none;cursor:pointer;z-index:95;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 26px -6px var(--accent-glow);
+  transition:transform .25s;
+}
+#chatToggle:hover{transform:scale(1.08);}
+#chatToggle svg{width:24px;height:24px;}
+#chatToggle .chat-ping{
+  position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;
+  background:var(--accent-3);border:2px solid var(--bg);
+}
+#chatPanel{
+  position:fixed;bottom:150px;right:26px;width:340px;max-width:calc(100vw - 32px);height:460px;max-height:70vh;
+  background:var(--panel);border:1px solid var(--border-bright);border-radius:16px;
+  display:flex;flex-direction:column;overflow:hidden;z-index:96;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  transform:translateY(16px) scale(.97);opacity:0;pointer-events:none;
+  transition:transform .25s ease, opacity .25s ease;
+}
+#chatPanel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
+.chat-head{
+  padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--panel-2),var(--panel));position:relative;overflow:hidden;
+}
+.chat-head::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:.06;animation:headSheen 6s linear infinite;
+}
+@keyframes headSheen{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+.chat-avatar{
+  position:relative;width:34px;height:34px;border-radius:50%;flex-shrink:0;z-index:1;
+  background:conic-gradient(from 0deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));
+  display:flex;align-items:center;justify-content:center;animation:avatarSpin 4s linear infinite;
+}
+@keyframes avatarSpin{100%{transform:rotate(360deg);}}
+.chat-avatar::after{
+  content:"";position:absolute;inset:3px;border-radius:50%;background:var(--panel-2);
+}
+.chat-avatar svg{position:relative;z-index:1;width:16px;height:16px;color:var(--accent);animation:avatarSpinBack 4s linear infinite;}
+@keyframes avatarSpinBack{100%{transform:rotate(-360deg);}}
+.chat-head .dot-live{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulseDot 1.6s infinite;flex-shrink:0;}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.4}}
+.chat-head-text{flex:1;z-index:1;}
+.chat-head-title{font-family:var(--mono);font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.chat-head-badge{
+  font-size:8.5px;font-weight:700;letter-spacing:.06em;padding:1.5px 5px;border-radius:4px;
+  background:var(--accent-glow);color:var(--accent);border:1px solid var(--accent);
+}
+.chat-head-sub{font-size:10.5px;color:var(--text-faint);}
+.msg.bot.thinking{opacity:.75;font-style:italic;font-size:11.5px;color:var(--text-faint);}
+.chat-close{background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;}
+.chat-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:13px;}
+.chat-body::-webkit-scrollbar{width:6px;}
+.chat-body::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:3px;}
+.msg{max-width:85%;padding:10px 12px;border-radius:12px;line-height:1.5;white-space:pre-wrap;}
+.msg.bot{background:var(--panel-2);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:2px;}
+.msg.user{background:var(--accent);color:#00140f;align-self:flex-end;border-bottom-right-radius:2px;font-weight:500;}
+.msg.typing{display:flex;gap:4px;align-items:center;padding:12px;}
+.msg.typing span{width:6px;height:6px;border-radius:50%;background:var(--text-faint);animation:typingDot 1.1s infinite;}
+.msg.typing span:nth-child(2){animation-delay:.15s;}
+.msg.typing span:nth-child(3){animation-delay:.3s;}
+@keyframes typingDot{0%,60%,100%{opacity:.3;transform:translateY(0);}30%{opacity:1;transform:translateY(-3px);}}
+.chat-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;}
+.chat-chip{
+  font-family:var(--mono);font-size:11px;padding:6px 10px;border-radius:20px;
+  border:1px solid var(--border-bright);background:var(--panel-2);color:var(--text-dim);
+  cursor:pointer;transition:all .2s;
+}
+.chat-chip:hover{border-color:var(--accent);color:var(--accent);}
+.chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);}
+.chat-input-row input{
+  flex:1;background:var(--panel-2);border:1px solid var(--border);color:var(--text);
+  padding:10px 12px;border-radius:8px;font-size:13px;outline:none;font-family:var(--sans);
+}
+.chat-input-row input:focus{border-color:var(--accent);}
+.chat-input-row button{
+  background:var(--accent);border:none;color:#00140f;width:38px;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.chat-input-row button svg{width:16px;height:16px;}
+.msg a{color:inherit;font-weight:600;text-decoration:underline;}
+@media (max-width:520px){
+  #chatPanel{right:12px;left:12px;width:auto;bottom:140px;}
+  #chatToggle{right:16px;bottom:78px;}
 }
 </style>
 </head>
@@ -400,11 +604,18 @@ footer .heart{color:var(--accent-3);}
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
+      <a href="#achievements">Achievements</a>
       <a href="#projects">Projects</a>
       <a href="#repos">Repos</a>
       <a href="#contact">Contact</a>
     </div>
-    <div class="nav-status"><span id="clock">--:--:--</span></div>
+    <div class="nav-status">
+      <button id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+        <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <span id="clock">--:--:--</span>
+    </div>
     <button class="hamburger" id="hamburger" aria-label="menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -503,7 +714,7 @@ footer .heart{color:var(--accent-3);}
     </div>
     <div class="tl-item">
       <div class="tl-dot"></div>
-      <div class="tl-date">JAN 2017 — OCT 2019 · 2.8 YRS · ATLANTA, US</div>
+      <div class="tl-date">JAN 2017 — OCT 2019 · 2.8 YRS</div>
       <div class="tl-role">Senior Software Engineer, CTO</div>
       <div class="tl-org">Mindtree Limited</div>
       <div class="tl-proj">Commercial MDS, Equifax Inc. · Interaction Suite</div>
@@ -556,6 +767,9 @@ footer .heart{color:var(--accent-3);}
     <div class="skill-cat"><h4>Styling</h4><div class="chip-row">
       <span class="chip">Tailwind CSS</span><span class="chip">Bootstrap</span><span class="chip">CSS</span><span class="chip">SCSS</span>
     </div></div>
+    <div class="skill-cat"><h4>Design &amp; UX</h4><div class="chip-row">
+      <span class="chip">Design systems</span><span class="chip">Motion / micro-interactions</span><span class="chip">Responsive layout</span><span class="chip">Design tokens</span><span class="chip">Accessibility (a11y)</span><span class="chip">Figma-to-code</span>
+    </div></div>
     <div class="skill-cat"><h4>CI/CD &amp; VCS</h4><div class="chip-row">
       <span class="chip">GitHub Actions</span><span class="chip">Jenkins</span><span class="chip">Git</span><span class="chip">SVN</span><span class="chip">Maven</span><span class="chip">Vite</span><span class="chip">Turborepo</span>
     </div></div>
@@ -568,10 +782,118 @@ footer .heart{color:var(--accent-3);}
   </div>
 </section>
 
+<!-- DOMAIN KNOWLEDGE -->
+<section id="domain">
+  <div class="section-head reveal">
+    <div class="section-tag">05 · Domain Expertise</div>
+    <h2 class="section-title">9.7 years, not just of code — of context.</h2>
+  </div>
+  <div class="domain-grid reveal">
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🚚</div>
+      <h4>Transportation &amp; Logistics</h4>
+      <p>5.4 years deep in TMS internals at Saksoft — routing rules, Google Maps API extensions, freight/carrier workflows on a Java/Oracle→PostgreSQL platform.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">⚖️</div>
+      <h4>Industrial IoT &amp; Weighbridge Systems</h4>
+      <p>Designed and shipped BabuScales end-to-end — real-world quarry weighing, stability-gated hardware capture, tamper-evident audit trails now running in commercial production.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🏦</div>
+      <h4>Consumer Credit &amp; Risk</h4>
+      <p>Built on a large-scale credit/risk codebase for Equifax at Mindtree — regulated data, SOAP integrations, and enterprise-grade reliability requirements.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🧑‍💼</div>
+      <h4>HR-Tech &amp; Recruiting</h4>
+      <p>Shipped HireWise, an AI-scored candidate-ranking pipeline covering the hiring funnel from job posting to match — production Claude API usage, not a demo.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🧾</div>
+      <h4>Fintech &amp; Billing/GST</h4>
+      <p>Built VaultBill, an offline-first invoicing workspace for GST workflows, with a custom print-ready document/template designer.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🤖</div>
+      <h4>AI Agent Engineering</h4>
+      <p>Designed KIMMY's least-privilege, sandboxed multi-agent architecture wired into 4 real enterprise systems — grounded reasoning over guessed answers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- KEY ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-head reveal">
+    <div class="section-tag">06 · Key Achievements</div>
+    <h2 class="section-title">Moments that moved the needle.</h2>
+  </div>
+  <div class="achv-grid reveal">
+    <div class="achv-card">
+      <div class="achv-num">01</div>
+      <p>Shipped <b>BabuScales</b> from first commit to a paying commercial customer (Babulens) — a full v1→v3 journey on Tauri/Rust, live in production in 2026.</p>
+    </div>
+    <div class="achv-card">
+      <div class="achv-num">02</div>
+      <p>Built a <b>Jenkins CI/CD pipeline from scratch</b> at Mindtree for a large consumer-credit codebase — called out by the team for the time it saved every release.</p>
+    </div>
+    <div class="achv-card">
+      <div class="achv-num">03</div>
+      <p>Extended the <b>Google Maps API</b> for client-specific routing logic on an enterprise TMS — direct, positive client feedback on the rollout.</p>
+    </div>
+    <div class="achv-card">
+      <div class="achv-num">04</div>
+      <p>Designed <b>KIMMY</b>, a sandboxed AI agent wired into 4 production systems (chat, work-tracking, source control, observability) with least-privilege access throughout.</p>
+    </div>
+    <div class="achv-card">
+      <div class="achv-num">05</div>
+      <p><b>4 solo products shipped end-to-end</b> — architecture, code, CI/CD, and deployment — outside of full-time engineering work.</p>
+    </div>
+    <div class="achv-card">
+      <div class="achv-num">06</div>
+      <p><b>9.7 years</b> across the full stack without narrowing to one specialty: frontend, backend, AI tooling, and CI/CD treated as one connected skillset.</p>
+    </div>
+    <div class="achv-card">
+      <div class="achv-num">07</div>
+      <p>Leading a <b>zero-downtime Oracle→PostgreSQL migration</b> on a live enterprise TMS while shipping a parallel React 19/Redux modernization alongside it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOBBIES -->
+<section id="hobbies">
+  <div class="section-head reveal">
+    <div class="section-tag">07 · Beyond the Code</div>
+    <h2 class="section-title">What I do when I'm not shipping.</h2>
+  </div>
+  <div class="domain-grid reveal">
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🛠️</div>
+      <h3>Side-project tinkering</h3>
+      <p>Same instinct that ships BabuScales/HireWise on weekends — always building something small end-to-end.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🤖</div>
+      <h3>AI agent experiments</h3>
+      <p>Poking at new agent frameworks and prompting patterns beyond what's already in production.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">📚</div>
+      <h3>Systems & architecture reading</h3>
+      <p>Distributed systems, database internals, and postmortems — the stuff behind the frameworks.</p>
+    </div>
+    <div class="domain-card tilt spotlight">
+      <div class="domain-icon">🎮</div>
+      <h3>Gaming</h3>
+      <p>Unwinding with strategy and story-driven games.</p>
+    </div>
+  </div>
+</section>
+
 <!-- PROJECTS -->
 <section id="projects">
   <div class="section-head reveal">
-    <div class="section-tag">05 · Featured Work</div>
+    <div class="section-tag">08 · Featured Work</div>
     <h2 class="section-title">Products shipped end-to-end.</h2>
   </div>
   <div class="project-grid reveal">
@@ -654,7 +976,7 @@ footer .heart{color:var(--accent-3);}
 <!-- LIVE GITHUB REPOS -->
 <section id="repos">
   <div class="section-head reveal">
-    <div class="section-tag">06 · Quick Actions</div>
+    <div class="section-tag">09 · Quick Actions</div>
     <h2 class="section-title">Live from GitHub.</h2>
   </div>
   <div class="gh-controls reveal">
@@ -704,6 +1026,36 @@ footer .heart{color:var(--accent-3);}
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
+<div id="cursorGlow"></div>
+<div id="cursorDot"></div>
+
+<button id="chatToggle" aria-label="Open assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+  <span class="chat-ping"></span>
+</button>
+
+<div id="chatPanel" role="dialog" aria-label="Portfolio assistant">
+  <div class="chat-head">
+    <div class="chat-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 017 7v1a2 2 0 012 2 2 2 0 01-2 2v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1a2 2 0 01-2-2 2 2 0 012-2v-1a7 7 0 017-7h1V5.73C10.4 5.39 10 4.74 10 4a2 2 0 012-2z"/><circle cx="9" cy="13" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+    <span class="dot-live"></span>
+    <div class="chat-head-text">
+      <div class="chat-head-title">Moleesh AI <span class="chat-head-badge">AI</span></div>
+      <div class="chat-head-sub">Trained on this portfolio · online</div>
+    </div>
+    <button class="chat-close" id="chatClose" aria-label="Close chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-chips" id="chatChips"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask about experience, skills, projects…" autocomplete="off">
+    <button id="chatSend" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+</div>
+
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -713,6 +1065,33 @@ function tick(){
   document.getElementById('clock').textContent = d.toLocaleTimeString('en-GB',{hour12:false});
 }
 tick(); setInterval(tick,1000);
+
+/* -------- theme toggle -------- */
+(function(){
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const iconMoon = document.getElementById('themeIconMoon');
+  const iconSun = document.getElementById('themeIconSun');
+  let saved = 'dark';
+  try{ saved = localStorage.getItem('theme') || 'dark'; }catch(e){}
+  function applyTheme(theme){
+    if(theme === 'light'){
+      root.setAttribute('data-theme','light');
+      iconMoon.style.display='none';
+      iconSun.style.display='';
+    } else {
+      root.removeAttribute('data-theme');
+      iconMoon.style.display='';
+      iconSun.style.display='none';
+    }
+  }
+  applyTheme(saved);
+  btn.addEventListener('click', ()=>{
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try{ localStorage.setItem('theme', next); }catch(e){}
+  });
+})();
 
 /* -------- typewriter -------- */
 const phrases = [
@@ -779,52 +1158,71 @@ document.getElementById('hamburger').addEventListener('click', ()=>{
   links.style.cssText += visible ? '' : 'position:fixed;top:60px;left:0;right:0;background:rgba(7,10,16,0.97);flex-direction:column;padding:20px 24px;border-bottom:1px solid var(--border);';
 });
 
-/* -------- circuit board animated background -------- */
+/* -------- circuit board animated background (lightweight, viewport-only) -------- */
 (function(){
   const canvas = document.getElementById('circuit-canvas');
   const ctx = canvas.getContext('2d');
-  let w,h,nodes=[],pulses=[];
-  function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=document.body.scrollHeight; }
-  window.addEventListener('resize', ()=>{ resize(); buildNodes(); });
+  const isCoarse = matchMedia('(pointer: coarse)').matches;
+  const isSmall = window.innerWidth < 768;
+  const lite = isCoarse || isSmall;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PULSE_COUNT = lite ? 5 : 14;
+  const CELL = lite ? 220 : 160;
+  const dpr = Math.min(window.devicePixelRatio || 1, lite ? 1 : 1.5);
+  let w,h,nodes=[],pulses=[],edgeCache=[];
+
+  if(reduceMotion){ canvas.style.display='none'; return; }
+
+  function resize(){
+    w = window.innerWidth; h = window.innerHeight;
+    canvas.width = w*dpr; canvas.height = h*dpr;
+    canvas.style.width = w+'px'; canvas.style.height = h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  let resizeTimer;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(()=>{ resize(); buildNodes(); buildEdges(); }, 200);
+  });
 
   function buildNodes(){
     nodes = [];
-    const cols = Math.ceil(w/160)+1, rows = Math.ceil(h/160)+1;
+    const cols = Math.ceil(w/CELL)+1, rows = Math.ceil(h/CELL)+1;
     for(let i=0;i<cols;i++){
       for(let j=0;j<rows;j++){
         if(Math.random() > 0.55) continue;
-        nodes.push({
-          x: i*160 + (Math.random()*60-30),
-          y: j*160 + (Math.random()*60-30),
-        });
+        nodes.push({ x: i*CELL + (Math.random()*60-30), y: j*CELL + (Math.random()*60-30) });
       }
     }
     pulses = [];
-    for(let i=0;i<14;i++){
-      spawnPulse();
-    }
+    for(let i=0;i<PULSE_COUNT;i++) spawnPulse();
   }
   function nearest(node, count){
     return nodes.filter(n=>n!==node).map(n=>({n,d:Math.hypot(n.x-node.x,n.y-node.y)})).sort((a,b)=>a.d-b.d).slice(0,count).map(o=>o.n);
   }
-  let edgeCache = null;
   function buildEdges(){
     edgeCache = [];
-    nodes.forEach(node=>{
-      nearest(node,2).forEach(n2=>{
-        edgeCache.push([node,n2]);
-      });
-    });
+    nodes.forEach(node=>{ nearest(node,2).forEach(n2=>{ edgeCache.push([node,n2]); }); });
   }
   function spawnPulse(){
-    if(!edgeCache || edgeCache.length===0) return;
+    if(edgeCache.length===0) return;
     const edge = edgeCache[Math.floor(Math.random()*edgeCache.length)];
     pulses.push({ a:edge[0], b:edge[1], t:0, speed: 0.004 + Math.random()*0.006, color: Math.random()>0.5 ? '57,255,199' : '84,168,255' });
   }
 
   resize(); buildNodes(); buildEdges();
 
-  function draw(){
+  let running = true;
+  document.addEventListener('visibilitychange', ()=>{ running = !document.hidden; if(running) requestAnimationFrame(draw); });
+
+  const frameInterval = lite ? 1000/24 : 1000/60;
+  let lastFrame = 0;
+  function draw(now){
+    if(!running) return;
+    requestAnimationFrame(draw);
+    if(now - lastFrame < frameInterval) return;
+    lastFrame = now;
+
     ctx.clearRect(0,0,w,h);
     ctx.strokeStyle = 'rgba(57,255,199,0.06)';
     ctx.lineWidth = 1;
@@ -853,10 +1251,9 @@ document.getElementById('hamburger').addEventListener('click', ()=>{
       ctx.fill();
     });
     pulses = pulses.filter(p=>p.t < 1);
-    while(pulses.length < 14) spawnPulse();
-    requestAnimationFrame(draw);
+    while(pulses.length < PULSE_COUNT) spawnPulse();
   }
-  draw();
+  requestAnimationFrame(draw);
 })();
 
 /* -------- GitHub repos fetch -------- */
@@ -896,17 +1293,40 @@ function renderRepos(list){
   grid.innerHTML = list.map(repoCardHTML).join('');
 }
 
-fetch(`https://api.github.com/users/${GH_USER}/repos?sort=pushed&per_page=100`)
-  .then(res => { if(!res.ok) throw new Error('GitHub API error'); return res.json(); })
-  .then(data => {
-    allRepos = data.filter(r=>!r.fork).sort((a,b)=> new Date(b.pushed_at)-new Date(a.pushed_at));
-    if(allRepos.length === 0){ allRepos = data; }
-    renderRepos(allRepos.slice(0,12));
-  })
-  .catch(err => {
-    document.getElementById('repoGrid').innerHTML =
-      `<div class="gh-loading">Couldn't reach the GitHub API right now. <a href="https://github.com/${GH_USER}?tab=repositories" target="_blank" style="color:var(--accent)">Browse repositories directly →</a></div>`;
-  });
+function loadRepos(){
+  fetch(`https://api.github.com/users/${GH_USER}/repos?sort=pushed&per_page=100`)
+    .then(res => { if(!res.ok) throw new Error('GitHub API error'); return res.json(); })
+    .then(data => {
+      const EXCLUDED = ['moleesh.github.io', 'mailing-poc', 'object-detection'];
+      const PINNED_ORDER = ['babuscales', 'weighbridge-v2.0', 'weighbridge-v1.0'];
+      const rest = data.filter(r=>!r.fork && !EXCLUDED.includes(r.name.toLowerCase()) && !PINNED_ORDER.includes(r.name.toLowerCase()))
+        .sort((a,b)=> new Date(b.pushed_at)-new Date(a.pushed_at));
+      const pinned = PINNED_ORDER
+        .map(name => data.find(r => r.name.toLowerCase() === name))
+        .filter(Boolean);
+      allRepos = [...pinned, ...rest];
+      if(allRepos.length === 0){ allRepos = data; }
+      renderRepos(allRepos.slice(0,12));
+    })
+    .catch(err => {
+      document.getElementById('repoGrid').innerHTML =
+        `<div class="gh-loading">Couldn't reach the GitHub API right now. <a href="https://github.com/${GH_USER}?tab=repositories" target="_blank" style="color:var(--accent)">Browse repositories directly →</a></div>`;
+    });
+}
+const reposSection = document.getElementById('repos');
+if(reposSection){
+  const repoLoadObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        loadRepos();
+        repoLoadObserver.disconnect();
+      }
+    });
+  }, {rootMargin:'400px'});
+  repoLoadObserver.observe(reposSection);
+} else {
+  loadRepos();
+}
 
 document.getElementById('repoSearch').addEventListener('input', (e)=>{
   const q = e.target.value.toLowerCase();
@@ -919,25 +1339,30 @@ document.getElementById('repoSearch').addEventListener('input', (e)=>{
 });
 
 /* -------- scroll progress bar -------- */
+const isTouch = matchMedia('(pointer: coarse)').matches;
+const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const scrollbar = document.getElementById('scrollbar');
-function updateScrollbar(){
+const blobs = document.querySelectorAll('.blob');
+let scrollTicking = false;
+function onScrollFrame(){
   const h = document.documentElement;
   const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
   scrollbar.style.width = pct + '%';
+  if(!isTouch && !prefersReducedMotion){
+    const y = window.scrollY;
+    blobs.forEach((b,i)=>{ b.style.transform = `translateY(${y * (0.05 + i*0.03)}px)`; });
+  }
+  scrollTicking = false;
 }
-window.addEventListener('scroll', updateScrollbar, {passive:true});
-updateScrollbar();
-
-/* -------- parallax blobs on scroll -------- */
-const blobs = document.querySelectorAll('.blob');
 window.addEventListener('scroll', ()=>{
-  const y = window.scrollY;
-  blobs.forEach((b,i)=>{ b.style.transform = `translateY(${y * (0.05 + i*0.03)}px)`; });
+  if(!scrollTicking){ requestAnimationFrame(onScrollFrame); scrollTicking = true; }
 }, {passive:true});
+onScrollFrame();
 
 /* -------- glitch title retrigger on hover -------- */
 const glitchTitle = document.getElementById('glitchTitle');
-if(glitchTitle){
+if(glitchTitle && !prefersReducedMotion){
   setTimeout(()=>{ glitchTitle.classList.add('glitching'); setTimeout(()=>glitchTitle.classList.remove('glitching'),1000); }, 900);
   glitchTitle.addEventListener('mouseenter', ()=>{
     glitchTitle.classList.remove('glitching'); void glitchTitle.offsetWidth;
@@ -946,7 +1371,8 @@ if(glitchTitle){
   });
 }
 
-/* -------- magnetic button glow (follows cursor) -------- */
+/* -------- magnetic button glow + tilt/spotlight (skipped on touch: no hover, saves battery/jank) -------- */
+if(!isTouch){
 document.querySelectorAll('.btn').forEach(btn=>{
   if(!btn.querySelector('.glow')){ const g=document.createElement('span'); g.className='glow'; btn.appendChild(g); }
   btn.addEventListener('mousemove', e=>{
@@ -956,21 +1382,28 @@ document.querySelectorAll('.btn').forEach(btn=>{
   });
 });
 
-/* -------- tilt + spotlight (event delegation for dynamic repo cards) -------- */
+let hoverTicking = false, lastMouseEvent = null;
 document.addEventListener('mousemove', (e)=>{
-  const tiltEl = e.target.closest('.tilt');
-  if(tiltEl){
-    const r = tiltEl.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    tiltEl.style.transform = `perspective(900px) rotateX(${(-py*6).toFixed(2)}deg) rotateY(${(px*8).toFixed(2)}deg) translateY(-6px)`;
-  }
-  const spotEl = e.target.closest('.spotlight');
-  if(spotEl){
-    const r = spotEl.getBoundingClientRect();
-    spotEl.style.setProperty('--sx', (e.clientX-r.left)+'px');
-    spotEl.style.setProperty('--sy', (e.clientY-r.top)+'px');
-  }
+  lastMouseEvent = e;
+  if(hoverTicking) return;
+  hoverTicking = true;
+  requestAnimationFrame(()=>{
+    const ev = lastMouseEvent;
+    const tiltEl = ev.target.closest('.tilt');
+    if(tiltEl){
+      const r = tiltEl.getBoundingClientRect();
+      const px = (ev.clientX - r.left) / r.width - 0.5;
+      const py = (ev.clientY - r.top) / r.height - 0.5;
+      tiltEl.style.transform = `perspective(900px) rotateX(${(-py*6).toFixed(2)}deg) rotateY(${(px*8).toFixed(2)}deg) translateY(-6px)`;
+    }
+    const spotEl = ev.target.closest('.spotlight');
+    if(spotEl){
+      const r = spotEl.getBoundingClientRect();
+      spotEl.style.setProperty('--sx', (ev.clientX-r.left)+'px');
+      spotEl.style.setProperty('--sy', (ev.clientY-r.top)+'px');
+    }
+    hoverTicking = false;
+  });
 });
 document.addEventListener('mouseleave', (e)=>{
   if(e.target.classList && e.target.classList.contains('tilt')){
@@ -980,6 +1413,7 @@ document.addEventListener('mouseleave', (e)=>{
 document.querySelectorAll('.tilt').forEach(el=>{
   el.addEventListener('mouseleave', ()=>{ el.style.transform=''; });
 });
+}
 
 /* -------- live preview embeds (lazy-loaded on click) -------- */
 document.querySelectorAll('.live-preview').forEach(container=>{
@@ -1016,6 +1450,328 @@ document.querySelectorAll('.live-preview').forEach(container=>{
   overlay.addEventListener('click', loadPreview);
   overlay.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); loadPreview(); } });
 });
+
+/* -------- lightweight cursor glow (desktop only) -------- */
+if(!isTouch && !prefersReducedMotion){
+  document.documentElement.classList.add('custom-cursor');
+  const glow = document.getElementById('cursorGlow');
+  const dot = document.getElementById('cursorDot');
+  let gx=0, gy=0, dx=0, dy=0, tx=0, ty=0, cursorTicking = false;
+  window.addEventListener('mousemove', e=>{
+    tx = e.clientX; ty = e.clientY;
+    if(!glow.classList.contains('active')){ glow.classList.add('active'); dot.classList.add('active'); gx=dx=tx; gy=dy=ty; }
+    const hovered = e.target.closest('a, button, .repo-card, .tilt, input, .chat-chip');
+    glow.classList.toggle('pointered', !!hovered);
+    dot.classList.toggle('pointered', !!hovered);
+    if(!cursorTicking){ requestAnimationFrame(cursorFrame); cursorTicking = true; }
+  }, {passive:true});
+  document.addEventListener('mouseleave', ()=>{ glow.classList.remove('active'); dot.classList.remove('active'); });
+  function cursorFrame(){
+    gx += (tx-gx)*0.16; gy += (ty-gy)*0.16;
+    dx += (tx-dx)*0.5; dy += (ty-dy)*0.5;
+    glow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%,-50%)`;
+    dot.style.transform = `translate(${dx}px, ${dy}px) translate(-50%,-50%)`;
+    if(Math.abs(tx-gx) > 0.3 || Math.abs(ty-gy) > 0.3){ requestAnimationFrame(cursorFrame); }
+    else { cursorTicking = false; }
+  }
+}
+
+/* -------- standalone "AI-style" chatbot (rule-based, no network calls) -------- */
+(function(){
+  const KB = {
+    name: 'A Moleesh',
+    role: 'Senior Software Engineer & AI Generalist',
+    location: 'Bangalore / Hosur, India',
+    experienceYears: '9.7',
+    email: 'moleesh1@gmail.com',
+    phone: '+91 89039 57007',
+    github: 'https://github.com/moleesh',
+    linkedin: 'https://linkedin.com/in/moleesh',
+    resume: 'resume.pdf',
+    companies: [
+      {name:'Saksoft Limited (formerly DreamOrbit)', role:'Module Lead', span:'Apr 2021 — Present · 5.4 yrs', detail:'Leads frontend on Infios/MercuryGate, a Java 17/Spring TMS monolith — shipping React 19/Redux, migrating Oracle→PostgreSQL, extending the Google Maps API for client routing.'},
+      {name:'Zoho Corporation', role:'Member Technical Staff', span:'Oct 2019 — Apr 2021 · 1.5 yrs', detail:'Worked across nearly every core module of Zoho CRM (Java, HTML5, JS, MySQL, PostgreSQL, Handlebars.js).'},
+      {name:'Mindtree Limited', role:'Senior Software Engineer, CTO', span:'Jan 2017 — Oct 2019 · 2.8 yrs', detail:'Delivered on a large consumer-credit codebase (C++, Java, Spring, SOAP) for Equifax; built a Jenkins pipeline from scratch; built Interaction Suite (React, Node.js, MongoDB) ground-up.'}
+    ],
+    skills: {
+      Languages:['Java','JavaScript','TypeScript','Python','C','C++','HTML'],
+      Frameworks:['Spring Boot','Spring MVC','Hibernate','JPA','React 19','Next.js','AngularJS','ExtJS','NodeJS'],
+      'AI / ML':['Claude AI API','OpenAI Codex','Cursor','GitHub Copilot','MCP','Multi-agent systems','Prompt engineering'],
+      Databases:['MySQL','Oracle','PostgreSQL','MongoDB','H2','Supabase'],
+      'Design & UX':['Design systems','Motion / micro-interactions','Responsive layout','Design tokens','Accessibility (a11y)','Figma-to-code'],
+      'CI/CD & VCS':['GitHub Actions','Jenkins','Git','SVN','Maven','Vite','Turborepo']
+    },
+    domains: [
+      {name:'Transportation & Logistics', detail:'5.4 years deep in TMS internals at Saksoft — routing rules, Google Maps API extensions, freight/carrier workflows.'},
+      {name:'Industrial IoT & Weighbridge Systems', detail:'Designed and shipped BabuScales — real-world quarry weighing hardware, tamper-evident audit trails, now in commercial production.'},
+      {name:'Consumer Credit & Risk', detail:'Built on a large-scale credit/risk codebase for Equifax at Mindtree — regulated data, SOAP integrations, enterprise reliability.'},
+      {name:'HR-Tech & Recruiting', detail:'Shipped HireWise, an AI-scored candidate-ranking pipeline from job posting to match — production Claude API usage.'},
+      {name:'Fintech & Billing/GST', detail:'Built VaultBill, an offline-first invoicing workspace for GST workflows with a custom document/template designer.'},
+      {name:'AI Agent Engineering', detail:"Designed KIMMY's least-privilege, sandboxed multi-agent architecture wired into 4 real enterprise systems."}
+    ],
+    achievements: [
+      'Shipped BabuScales from first commit to a paying commercial customer (Babulens) — full v1→v3 journey, live in production in 2026.',
+      'Built a Jenkins CI/CD pipeline from scratch at Mindtree for a large consumer-credit codebase — recognized by the team for the time it saved.',
+      'Extended the Google Maps API for client-specific routing logic on an enterprise TMS — direct, positive client feedback.',
+      "Designed KIMMY, a sandboxed AI agent wired into 4 production systems with least-privilege access throughout.",
+      '4 solo products shipped end-to-end — architecture, code, CI/CD, and deployment — outside full-time work.',
+      '9.7 years across the full stack without narrowing to one specialty: frontend, backend, AI tooling, and CI/CD as one skillset.',
+      'Leading a zero-downtime Oracle→PostgreSQL migration on a live enterprise TMS while shipping a parallel React 19/Redux modernization.'
+    ],
+    hobbies: [
+      {name:'Side-project tinkering', detail:'Same instinct that ships BabuScales/HireWise on weekends — always building something small end-to-end.'},
+      {name:'AI agent experiments', detail:"Poking at new agent frameworks and prompting patterns beyond what's already in production."},
+      {name:'Systems & architecture reading', detail:'Distributed systems, database internals, and postmortems — the stuff behind the frameworks.'},
+      {name:'Gaming', detail:'Unwinding with strategy and story-driven games.'}
+    ],
+    projects: {
+      babuscales:{name:'BabuScales', desc:"Weighbridge platform, v1→v3. Commercial release (2026) on Tauri v2/Rust, React 19/TypeScript, SQLite — stability-gated multi-lorry weighing, photographic capture, hash-chained tamper-evident audit trail, offline-first Ed25519-signed licensing, bilingual English/Tamil UI.", url:'https://github.com/moleesh/BabuScales'},
+      hirewise:{name:'HireWise', desc:'AI-powered recruiting platform covering job posting through candidate ranking, powered by the Claude AI API, with Excel-ready reporting and a role-based admin dashboard.', url:'https://github.com/moleesh/HireWise'},
+      firstday:{name:'FirstDay', desc:'Employee onboarding platform (Turborepo/pnpm monorepo). Recruiters assemble onboarding packs and map PDF fields; joinees upload, e-sign, and download completed packs.', url:'https://github.com/moleesh/FirstDay'},
+      vaultbill:{name:'VaultBill', desc:'Offline-first billing/invoicing workspace for GST workflows — browser demo plus an Electron desktop app for Windows/Linux, with a custom document/template designer.', url:'https://github.com/moleesh/VaultBill'}
+    },
+    kimmy: "KIMMY is a headless, sandboxed agent engine automating SWAG estimation and feasibility analysis — grounded in two real production codebases. It's wired into team chat (OAuth2+PKCE), work-tracking, source control, and observability, with every tool designed least-privilege."
+  };
+
+  const chatToggle = document.getElementById('chatToggle');
+  const chatPanel = document.getElementById('chatPanel');
+  const chatClose = document.getElementById('chatClose');
+  const chatBody = document.getElementById('chatBody');
+  const chatChips = document.getElementById('chatChips');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+
+  let opened = false;
+  function addMsg(html, who){
+    const div = document.createElement('div');
+    div.className = 'msg ' + who;
+    div.innerHTML = html;
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    return div;
+  }
+  function showTyping(){
+    const div = document.createElement('div');
+    div.className = 'msg bot typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    return div;
+  }
+  const THINKING_LINES = [
+    'Reading through the portfolio…',
+    'Cross-checking the resume…',
+    'Thinking it over…',
+    'Digging through the projects…',
+    'One sec, connecting the dots…'
+  ];
+  function botSay(html, delay){
+    const thinkMsg = document.createElement('div');
+    thinkMsg.className = 'msg bot thinking';
+    thinkMsg.textContent = THINKING_LINES[Math.floor(Math.random()*THINKING_LINES.length)];
+    chatBody.appendChild(thinkMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    const thinkDelay = 550 + Math.random() * 500;
+    const typeDelay = delay || Math.min(2200, 600 + html.length * 6 + Math.random()*500);
+
+    return new Promise(resolve=>{
+      setTimeout(()=>{
+        thinkMsg.remove();
+        const typing = showTyping();
+        setTimeout(()=>{
+          typing.remove();
+          addMsg(html, 'bot');
+          resolve();
+        }, typeDelay);
+      }, thinkDelay);
+    });
+  }
+  function setChips(list){
+    chatChips.innerHTML = '';
+    list.forEach(label=>{
+      const b = document.createElement('button');
+      b.className = 'chat-chip';
+      b.textContent = label;
+      b.addEventListener('click', ()=> handleInput(label));
+      chatChips.appendChild(b);
+    });
+  }
+  const DEFAULT_CHIPS = ['Experience', 'Skills', 'Achievements', 'Hobbies', 'Projects', 'Contact'];
+
+  function skillsHTML(){
+    return Object.entries(KB.skills).map(([cat, items])=>`<b>${cat}:</b> ${items.join(', ')}`).join('<br>');
+  }
+  function projectHTML(p){
+    return `<b>${p.name}</b> — ${p.desc}<br><a href="${p.url}" target="_blank" rel="noopener">View on GitHub →</a>`;
+  }
+  function experienceHTML(){
+    return KB.companies.map(c=>`<b>${c.role}, ${c.name}</b><br><span style="opacity:.75">${c.span}</span><br>${c.detail}`).join('<br><br>');
+  }
+  function domainHTML(){
+    return `9.7 years isn't just tech depth — it's domain range:<br><br>` + KB.domains.map(d=>`<b>${d.name}</b> — ${d.detail}`).join('<br><br>');
+  }
+  function achievementsHTML(){
+    return KB.achievements.map((a,i)=>`<b>${i+1}.</b> ${a}`).join('<br><br>');
+  }
+  function hobbiesHTML(){
+    return `Outside of shipping code:<br><br>` + KB.hobbies.map(h=>`<b>${h.name}</b> — ${h.detail}`).join('<br><br>');
+  }
+  function contactHTML(){
+    return `You can reach ${KB.name} at:<br>`
+      + `📧 <a href="mailto:${KB.email}">${KB.email}</a><br>`
+      + `📞 <a href="tel:${KB.phone.replace(/\s/g,'')}">${KB.phone}</a><br>`
+      + `💻 <a href="${KB.github}" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; `
+      + `🔗 <a href="${KB.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`;
+  }
+
+  function findProject(text){
+    return Object.values(KB.projects).find(p => text.includes(p.name.toLowerCase()));
+  }
+
+  const KNOWN_WORDS = ['experience','experiences','skills','skill','projects','project','portfolio','domain','domains',
+    'achievements','achievement','achieve','hobbies','hobby','interests','contact','email','phone','resume','cv',
+    'hire','hiring','available','availability','relocate','relocation','freelance','kimmy','artificial','human',
+    'linkedin','github','babuscales','hirewise','firstday','vaultbill','technology','technologies','language',
+    'languages','framework','frameworks','design','stack','industry','industries','background','career','company',
+    'companies','thanks','thank','hello','proudest','highlight','highlights','accomplish','accomplishments'];
+
+  function levenshtein(a, b){
+    const m = a.length, n = b.length;
+    const dp = Array.from({length: m+1}, (_, i) => [i, ...Array(n).fill(0)]);
+    for(let j=0;j<=n;j++) dp[0][j] = j;
+    for(let i=1;i<=m;i++){
+      for(let j=1;j<=n;j++){
+        dp[i][j] = a[i-1] === b[j-1]
+          ? dp[i-1][j-1]
+          : 1 + Math.min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]);
+      }
+    }
+    return dp[m][n];
+  }
+
+  const COMMON_WORDS = ['tell','your','about','this','that','with','from','what','when','where','have',
+    'their','would','could','should','there','which','while','being','doing','does','did','the','and',
+    'for','are','you','can','how','who','why','not','was','were','will','just','like','know','more',
+    'than','they','them','then','some','also','into','give','tale','fell','well'];
+
+  function correctTypos(text){
+    return text.split(/(\s+)/).map(token=>{
+      const word = token.replace(/[^a-z]/g,'');
+      if(word.length < 5 || KNOWN_WORDS.includes(word) || COMMON_WORDS.includes(word)) return token;
+      let best = null, bestDist = Infinity;
+      for(const kw of KNOWN_WORDS){
+        const d = levenshtein(word, kw);
+        if(d < bestDist){ bestDist = d; best = kw; }
+      }
+      if(best && bestDist <= 3 && bestDist / best.length <= 0.32){
+        return token.replace(word, best);
+      }
+      return token;
+    }).join('');
+  }
+
+  function respond(raw){
+    const text = correctTypos(raw.toLowerCase().trim());
+
+    if(/^(hi|hey|hello|yo|sup)\b/.test(text)){
+      setChips(DEFAULT_CHIPS);
+      return `Hey! I'm ${KB.name}'s portfolio assistant. Ask me about experience, skills, projects, or how to get in touch.`;
+    }
+    if(/\b(ai|artificial intelligence|are you (a )?(bot|real|human)|llm|gpt)\b/.test(text)){
+      setChips(DEFAULT_CHIPS);
+      return "I'm a small rule-based assistant built right into this page — no external AI calls, just good old keyword matching over the content here. Old-school, but I get the job done. 🙂";
+    }
+    if(/\b(kimmy)\b/.test(text)){
+      setChips(['Experience', 'Skills', 'Contact']);
+      return KB.kimmy;
+    }
+    const proj = findProject(text);
+    if(proj || /\bproject|portfolio|shipped|built|work\b/.test(text)){
+      if(proj){
+        setChips(Object.values(KB.projects).map(p=>p.name).filter(n=>n.toLowerCase()!==proj.name.toLowerCase()).concat('Contact'));
+        return projectHTML(proj);
+      }
+      setChips(Object.values(KB.projects).map(p=>p.name));
+      return `${KB.name} has shipped four solo products end-to-end:<br><br>` + Object.values(KB.projects).map(p=>`<b>${p.name}</b> — ${p.desc.split('.')[0]}.`).join('<br>') + `<br><br>Ask me about any one of them by name.`;
+    }
+    if(/\b(experience|work history|companies|career|background|job)\b/.test(text)){
+      setChips(['Skills', 'Projects', 'Contact']);
+      return experienceHTML();
+    }
+    if(/\b(skill\w*|tech stack|stack|technolog\w*|language\w*|framework\w*|design\w*|ux|ui)\b/.test(text)){
+      setChips(['Domain Knowledge', 'Experience', 'Projects', 'Contact']);
+      return skillsHTML();
+    }
+    if(/\b(domain|industry|industries|sector|vertical)\b/.test(text)){
+      setChips(['Achievements', 'Experience', 'Projects']);
+      return domainHTML();
+    }
+    if(/\b(achiev\w*|accomplish\w*|highlight\w*|proudest|impact\w*)\b/.test(text)){
+      setChips(['Domain Knowledge', 'Experience', 'Contact']);
+      return achievementsHTML();
+    }
+    if(/\b(hobb\w*|interest\w*|spare time|free time|outside work|fun fact\w*|pastime\w*)\b/.test(text)){
+      setChips(['Achievements', 'Domain Knowledge', 'Contact']);
+      return hobbiesHTML();
+    }
+    if(/\b(resume|cv)\b/.test(text)){
+      setChips(['Experience', 'Skills', 'Contact']);
+      return `Here's the resume: <a href="${KB.resume}" target="_blank" rel="noopener">Download PDF →</a>`;
+    }
+    if(/\b(contact|email|phone|reach|hire|linkedin|call|talk)\b/.test(text)){
+      setChips(['Resume', 'Experience', 'Projects']);
+      return contactHTML();
+    }
+    if(/\b(available|availability|open to|hiring|freelance|relocat\w*)\b/.test(text)){
+      setChips(['Contact', 'Resume', 'Experience']);
+      return `${KB.name} is open to Senior / Lead Engineering roles and interesting AI-engineering problems, based in ${KB.location} — happy to discuss remote or relocation. Best reached via the Contact section.`;
+    }
+    if(/\b(who|about|yourself|you\b.*(are|do))\b/.test(text)){
+      setChips(DEFAULT_CHIPS);
+      return `${KB.name} is a ${KB.role} with ${KB.experienceYears} years across the stack — frontend-deep in React/ExtJS, backed by Java/Spring, with AI agents (like KIMMY) shipped in production.`;
+    }
+    if(/\b(thank|thanks|bye|cool|nice|great)\b/.test(text)){
+      setChips(DEFAULT_CHIPS);
+      return "Anytime! Feel free to poke around the page, or ask me anything else.";
+    }
+    setChips(DEFAULT_CHIPS);
+    return FALLBACK_LINES[Math.floor(Math.random()*FALLBACK_LINES.length)];
+  }
+
+  const FALLBACK_LINES = [
+    "I only know what's on this page — try asking about experience, skills, one of the projects (BabuScales, HireWise, FirstDay, VaultBill), or how to get in touch.",
+    "That one's outside my training data — which is, uh, this one webpage. Try asking about skills, projects, or experience instead.",
+    "I'd crack a joke about not understanding that, but honestly I don't understand most things outside 'experience', 'skills', 'projects', and 'contact'. Try one of those!",
+    "404: answer not found. 200: I do know about BabuScales, HireWise, FirstDay, and VaultBill though — ask me about one.",
+    "I'm a simple chatbot living entirely off keyword matches — you just found one of my blind spots. Ask about domain knowledge or achievements instead?",
+    "Somewhere, a real AI is laughing at me for not getting that. I only read this page though, so try 'skills', 'experience', or 'contact'.",
+    "I'd tell you a joke about recursion, but you'd have to already understand the joke about recursion to get it. Ask me about projects instead — I'm much funnier there."
+  ];
+
+  function handleInput(value){
+    const text = (value || chatInput.value).trim();
+    if(!text) return;
+    addMsg(text.replace(/</g,'&lt;'), 'user');
+    chatInput.value = '';
+    chatChips.innerHTML = '';
+    botSay(respond(text));
+  }
+
+  chatToggle.addEventListener('click', ()=>{
+    opened = !opened;
+    chatPanel.classList.toggle('open', opened);
+    if(opened && chatBody.children.length === 0){
+      setTimeout(()=>{
+        botSay(`Hi, I'm a small assistant for ${KB.name}'s portfolio. I only answer from what's on this page — ask me about experience, skills, projects, or contact info.`, 600).then(()=> setChips(DEFAULT_CHIPS));
+      }, 200);
+    }
+    if(opened) setTimeout(()=> chatInput.focus(), 300);
+  });
+  chatClose.addEventListener('click', ()=>{ opened = false; chatPanel.classList.remove('open'); });
+  chatSend.addEventListener('click', ()=> handleInput());
+  chatInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') handleInput(); });
+})();
 </script>
 </body>
 </html>
