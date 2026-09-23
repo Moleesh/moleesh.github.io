@@ -305,11 +305,26 @@ section:not(#top):not(#about){content-visibility:auto;contain-intrinsic-size:1px
 }
 .project-links a:hover{border-color:var(--accent);color:var(--accent);background:rgba(57,255,199,0.08);}
 .project-links svg{width:15px;height:15px;}
+.project-badge{
+  font-size:.72rem;font-weight:600;letter-spacing:.02em;white-space:nowrap;
+  padding:6px 10px;border-radius:8px;border:1px solid var(--border);color:var(--text-dim);
+}
 .project-desc{color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:16px;flex-grow:1;}
 .project-desc li{list-style:none;margin-bottom:8px;padding-left:16px;position:relative;}
 .project-desc li::before{content:"//";position:absolute;left:0;color:var(--accent-2);font-size:12px;}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;}
 .tag-row span{font-family:var(--mono);font-size:11px;color:var(--text-faint);background:var(--panel-2);padding:4px 9px;border-radius:6px;border:1px solid var(--border);}
+.project-flow{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  margin:2px 0 14px;padding:12px;border-radius:10px;
+  background:rgba(57,255,199,0.06);border:1px solid rgba(57,255,199,0.18);
+}
+.project-flow .step{
+  font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--accent);
+  background:var(--panel-2);padding:5px 10px;border-radius:6px;border:1px solid var(--border);
+  white-space:nowrap;
+}
+.project-flow .arrow{color:var(--accent);opacity:.6;font-size:13px;}
 
 /* ---------- LIVE PREVIEW EMBED ---------- */
 .live-preview{
@@ -944,6 +959,34 @@ footer .heart{color:var(--accent-3);}
     <h2 class="section-title">Products shipped end-to-end.</h2>
   </div>
   <div class="project-grid reveal">
+
+    <div class="project-card tilt spotlight">
+      <div class="project-top">
+        <div class="project-name">KIMMY</div>
+        <div class="project-links">
+          <span class="project-badge" title="Internal enterprise tool — no public repo/link">Internal · Enterprise</span>
+        </div>
+      </div>
+      <div class="project-flow">
+        <span class="step">Teams @mention</span><span class="arrow">→</span>
+        <span class="step">sandboxed agent spun up</span><span class="arrow">→</span>
+        <span class="step">ADO relation graph + comments</span><span class="arrow">→</span>
+        <span class="step">GitLab code grounding</span><span class="arrow">→</span>
+        <span class="step">estimate reasoned</span><span class="arrow">→</span>
+        <span class="step">posted back to Teams</span>
+      </div>
+      <div class="project-desc">
+        <ul>
+          <li><b>SWAG estimation and feasibility analysis, done live in Microsoft Teams</b> — turns a multi-week dev-to-lead relay for effort estimates into a same-day conversation, grounded in real source code instead of guesswork.</li>
+          <li>Headless, sandboxed multi-agent engine (one isolated agent process per Teams thread) wired into 4 real enterprise systems: Teams (delegated OAuth2 + PKCE), Azure DevOps, GitLab, and Dynatrace — least-privilege access throughout.</li>
+          <li>Before every estimate, automatically walks the full Azure DevOps relation graph and reads every comment/attachment on the work item — so the agent reasons from complete ticket context, not just the title.</li>
+          <li>Grounds every estimate in the actual GitLab codebase it'll touch, not the model's assumptions — cross-checked against two real production systems.</li>
+          <li>Posts results back to Teams as comments and attachments on the work item — reads and writes are intentionally scoped apart: it never changes a ticket's state, status, or assignment.</li>
+          <li>Proven live on real work: two fully reconciled production estimates, audited across 51 agent sessions. Automated code review is designed and in progress, not yet shipped.</li>
+        </ul>
+      </div>
+      <div class="tag-row"><span>Claude API</span><span>Multi-agent</span><span>OAuth2+PKCE</span><span>Sandboxed</span><span>Azure DevOps</span><span>MCP</span></div>
+    </div>
 
     <div class="project-card tilt spotlight">
       <div class="project-top">
