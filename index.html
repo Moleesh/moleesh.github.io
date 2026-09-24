@@ -570,14 +570,19 @@ footer .heart{color:var(--accent-3);}
 }
 @keyframes pingPop{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
 #chatPanel{
-  position:fixed;bottom:150px;right:26px;width:340px;max-width:calc(100vw - 32px);height:460px;max-height:70vh;
+  position:fixed;top:50%;left:50%;width:380px;max-width:calc(100vw - 32px);height:520px;max-height:78vh;
   background:var(--panel);border:1px solid var(--border-bright);border-radius:16px;
   display:flex;flex-direction:column;overflow:hidden;z-index:96;
   box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
-  transform:translateY(16px) scale(.97);opacity:0;pointer-events:none;
+  transform:translate(-50%,-50%) scale(.97);opacity:0;pointer-events:none;
   transition:transform .25s ease, opacity .25s ease;
 }
-#chatPanel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
+#chatPanel.open{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto;}
+#chatBackdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(2px);
+  z-index:95;opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+#chatBackdrop.open{opacity:1;pointer-events:auto;}
 .chat-head{
   padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;
   background:linear-gradient(135deg,var(--panel-2),var(--panel));position:relative;overflow:hidden;
@@ -641,7 +646,8 @@ footer .heart{color:var(--accent-3);}
 .chat-input-row button svg{width:16px;height:16px;}
 .msg a{color:inherit;font-weight:600;text-decoration:underline;}
 @media (max-width:520px){
-  #chatPanel{right:12px;left:12px;width:auto;bottom:70px;}
+  #chatPanel{top:auto;right:12px;left:12px;width:auto;bottom:70px;transform:translateY(16px) scale(.97);}
+  #chatPanel.open{transform:translateY(0) scale(1);}
 
   /* Dock the floating chat/back-to-top circles into one bottom bar instead of
      letting them float over content mid-page. */
@@ -1123,6 +1129,7 @@ footer .heart{color:var(--accent-3);}
 <div id="cursorGlow"></div>
 <div id="cursorDot"></div>
 
+<div id="chatBackdrop"></div>
 <button id="chatToggle" aria-label="Open assistant">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 017 7v1a2 2 0 012 2 2 2 0 01-2 2v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1a2 2 0 01-2-2 2 2 0 012-2v-1a7 7 0 017-7h1V5.73C10.4 5.39 10 4.74 10 4a2 2 0 012-2z"/><circle cx="9" cy="13" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="currentColor" stroke="none"/></svg>
   <span class="chat-ping"></span>
@@ -1634,6 +1641,7 @@ if(!isTouch && !prefersReducedMotion){
   const chatToggle = document.getElementById('chatToggle');
   const chatPanel = document.getElementById('chatPanel');
   const chatClose = document.getElementById('chatClose');
+  const chatBackdrop = document.getElementById('chatBackdrop');
   const chatBody = document.getElementById('chatBody');
   const chatChips = document.getElementById('chatChips');
   const chatInput = document.getElementById('chatInput');
@@ -1859,6 +1867,7 @@ if(!isTouch && !prefersReducedMotion){
   chatToggle.addEventListener('click', ()=>{
     opened = !opened;
     chatPanel.classList.toggle('open', opened);
+    chatBackdrop.classList.toggle('open', opened);
     if(opened && chatBody.children.length === 0){
       setTimeout(()=>{
         botSay(`Hi, I'm a small assistant for ${KB.name}'s portfolio. I only answer from what's on this page — ask me about experience, skills, projects, or contact info.`, 600).then(()=> setChips(DEFAULT_CHIPS));
@@ -1866,7 +1875,8 @@ if(!isTouch && !prefersReducedMotion){
     }
     if(opened) setTimeout(()=> chatInput.focus(), 300);
   });
-  chatClose.addEventListener('click', ()=>{ opened = false; chatPanel.classList.remove('open'); });
+  chatClose.addEventListener('click', ()=>{ opened = false; chatPanel.classList.remove('open'); chatBackdrop.classList.remove('open'); });
+  chatBackdrop.addEventListener('click', ()=>{ opened = false; chatPanel.classList.remove('open'); chatBackdrop.classList.remove('open'); });
   chatSend.addEventListener('click', ()=> handleInput());
   chatInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') handleInput(); });
 })();
