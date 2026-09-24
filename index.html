@@ -813,6 +813,17 @@ footer .heart{color:var(--accent-3);}
         <li>LLM work also ships publicly: HireWise's candidate-ranking pipeline calls the Claude AI API directly for automated match scoring.</li>
       </ul>
     </div>
+    <div class="project-flow" style="margin-top:2px;">
+      <span class="step">@mention in Teams</span><span class="arrow">→</span>
+      <span class="step">Sandboxed agent spins up</span><span class="arrow">→</span>
+      <span class="step">ADO relation graph + comments</span><span class="arrow">→</span>
+      <span class="step">GitLab code grounding</span><span class="arrow">→</span>
+      <span class="step">Estimate reasoned</span><span class="arrow">→</span>
+      <span class="step">Posted back to Teams</span>
+    </div>
+    <p style="font-size:12.5px;color:var(--text-faint);margin-top:-6px;margin-bottom:14px;">
+      Architecture summary only — KIMMY reads two internal enterprise codebases it has no rights to publish, so there's no public repo for this one. Happy to walk through the design live.
+    </p>
     <div class="tag-row"><span>Claude AI API</span><span>MCP</span><span>Multi-agent systems</span><span>OAuth2+PKCE</span><span>Least-privilege design</span></div>
   </div>
 </section>
@@ -1636,7 +1647,11 @@ if(!isTouch && !prefersReducedMotion){
       firstday:{name:'FirstDay', desc:'Employee onboarding platform (Turborepo/pnpm monorepo). Recruiters assemble onboarding packs and map PDF fields; joinees upload, e-sign, and download completed packs.', url:'https://github.com/moleesh/FirstDay'},
       vaultbill:{name:'VaultBill', desc:'Offline-first billing/invoicing workspace for GST workflows — browser demo plus an Electron desktop app for Windows/Linux, with a custom document/template designer.', url:'https://github.com/moleesh/VaultBill'}
     },
-    kimmy: "KIMMY is a headless, sandboxed agent engine automating SWAG estimation and feasibility analysis — grounded in two real production codebases. It's wired into team chat (OAuth2+PKCE), work-tracking, source control, and observability, with every tool designed least-privilege."
+    kimmy: "KIMMY is a headless, sandboxed agent engine automating SWAG estimation and feasibility analysis — grounded in two real production codebases. It's wired into team chat (OAuth2+PKCE), work-tracking, source control, and observability, with every tool designed least-privilege.",
+    kimmyWhy: "The problem it solves: getting a rough estimate on a work item used to mean pinging a dev, waiting for them to context-switch, dig through two codebases, and reply — often days later. KIMMY collapses that into a same-day Teams conversation, with two production estimates already fully reconciled against what a human reviewer independently concluded.",
+    kimmyFlow: "The flow: someone @mentions KIMMY on a work item in Teams → a sandboxed agent instance spins up for that request → it walks the work-tracking system's relation graph and comments for context → pulls the actual source from source control to ground itself in real code, not assumptions → reasons through a SWAG estimate and feasibility read → posts the result back into the same Teams thread.",
+    kimmyStack: "Under the hood: Claude AI API for the reasoning, MCP-style tool wiring for each integration, OAuth2+PKCE with headless token refresh for the Teams connection, and a relation-graph traversal layer for the work-tracking side. Every credential and tool is scoped least-privilege — write/admin capabilities are explicitly disabled, and the whole thing runs in its own sandboxed runtime with no dependency on my personal machine.",
+    kimmyWhyNoRepo: "No public repo for this one — KIMMY reads and reasons over two real internal enterprise codebases it has no rights to publish, so open-sourcing it isn't really an option. What I can do is walk through the architecture and design decisions directly — happy to do that in a call."
   };
 
   const chatToggle = document.getElementById('chatToggle');
@@ -1790,8 +1805,36 @@ if(!isTouch && !prefersReducedMotion){
       return "I'm a small rule-based assistant built right into this page — no external AI calls, just good old keyword matching over the content here. Old-school, but I get the job done. 🙂";
     }
     if(/\b(kimmy)\b/.test(text)){
-      setChips(['Experience', 'Skills', 'Contact']);
+      if(/\b(how|flow|work\w*|step\w*|process|pipeline)\b/.test(text)){
+        setChips(['KIMMY Stack', 'Why Built', 'Contact']);
+        return KB.kimmyFlow;
+      }
+      if(/\b(why|problem|solve\w*|point|matter\w*)\b/.test(text)){
+        setChips(['KIMMY Flow', 'KIMMY Stack', 'Contact']);
+        return KB.kimmyWhy;
+      }
+      if(/\b(stack|tech|technolog\w*|built with|under the hood|architecture|security|secure|privilege)\b/.test(text)){
+        setChips(['KIMMY Flow', 'Why Built', 'Contact']);
+        return KB.kimmyStack;
+      }
+      if(/\b(repo|repository|github|open\s?source|code|source|public|link|demo)\b/.test(text)){
+        setChips(['KIMMY Flow', 'KIMMY Stack', 'Contact']);
+        return KB.kimmyWhyNoRepo;
+      }
+      setChips(['How It Works', 'Why Built', 'KIMMY Stack']);
       return KB.kimmy;
+    }
+    if(/\b(how it works|kimmy flow)\b/.test(text)){
+      setChips(['KIMMY Stack', 'Why Built', 'Contact']);
+      return KB.kimmyFlow;
+    }
+    if(/\b(why built)\b/.test(text)){
+      setChips(['KIMMY Flow', 'KIMMY Stack', 'Contact']);
+      return KB.kimmyWhy;
+    }
+    if(/\b(kimmy stack)\b/.test(text)){
+      setChips(['KIMMY Flow', 'Why Built', 'Contact']);
+      return KB.kimmyStack;
     }
     const proj = findProject(text);
     if(proj || /\bproject|portfolio|shipped|built|work\b/.test(text)){
