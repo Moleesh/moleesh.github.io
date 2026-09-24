@@ -475,7 +475,6 @@ footer .heart{color:var(--accent-3);}
 
 @media (max-width:900px){
   .hero-grid{grid-template-columns:1fr;}
-  .hero-card{order:-1;}
   .about-grid{grid-template-columns:1fr;}
   .nav-links{display:none;}
   .hamburger{display:flex;}
@@ -702,7 +701,7 @@ footer .heart{color:var(--accent-3);}
     <div>
       <div class="eyebrow">whoami — Senior Software Engineer, AI Generalist</div>
       <h1 class="title">Building software that <span class="accent-word glitch-word" data-text="grounds itself" id="glitchTitle">grounds itself</span> in real code.</h1>
-      <p class="subtitle">Senior Software Engineer &amp; AI Generalist — 9.7 years across the full stack. Frontend-deep on React/ExtJS, Java/Spring backends, and production AI agents wired into real engineering workflows.</p>
+      <p class="subtitle">Senior Software Engineer &amp; AI Generalist — 9.7 years across the full stack. Frontend-deep on React/ExtJS, Java/Spring backends, and production AI agents wired into real engineering workflows — including one that turned a multi-week estimate relay into a same-day conversation.</p>
       <div class="typewriter-line"><span id="typewriter"></span><span class="cursor">&nbsp;</span></div>
       <div class="hero-cta">
         <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">
@@ -747,10 +746,10 @@ footer .heart{color:var(--accent-3);}
       <p>Outside work, I ship complete products solo: BabuScales runs live quarry weighbridge operations in production, and three more (HireWise, FirstDay, VaultBill) went from first commit to public release, deployed through my own CI/CD pipelines.</p>
     </div>
     <div class="stat-grid reveal">
-      <div class="stat-card"><div class="stat-num" data-count="9.7">0</div><div class="stat-label">YEARS EXPERIENCE</div></div>
-      <div class="stat-card"><div class="stat-num" data-count="4">0</div><div class="stat-label">PRODUCTS SHIPPED SOLO</div></div>
-      <div class="stat-card"><div class="stat-num" data-count="3">0</div><div class="stat-label">COMPANIES</div></div>
-      <div class="stat-card"><div class="stat-num" data-count="1">0</div><div class="stat-label">COMMERCIAL PRODUCT LIVE</div></div>
+      <div class="stat-card"><div class="stat-num" data-count="9.7">9.7</div><div class="stat-label">YEARS EXPERIENCE</div></div>
+      <div class="stat-card"><div class="stat-num" data-count="4">4</div><div class="stat-label">PRODUCTS SHIPPED SOLO</div></div>
+      <div class="stat-card"><div class="stat-num" data-count="3">3</div><div class="stat-label">COMPANIES</div></div>
+      <div class="stat-card"><div class="stat-num" data-count="1">1</div><div class="stat-label">COMMERCIAL PRODUCT LIVE</div></div>
     </div>
   </div>
 </section>
@@ -807,6 +806,7 @@ footer .heart{color:var(--accent-3);}
   <div class="project-card reveal" style="max-width:100%;">
     <div class="project-desc" style="font-size:15px;">
       <ul>
+        <li><b>Turns a multi-week dev-to-lead estimate relay into a same-day Teams conversation</b> — grounded in real code, not guesswork, with two production estimates fully reconciled so far.</li>
         <li>Headless, sandboxed agent engine automating SWAG estimation and feasibility analysis, reading two production codebases so every estimate is grounded in real code.</li>
         <li>Wired into four enterprise systems: team chat (OAuth2 + PKCE, headless token refresh), work-tracking (relation-graph traversal, scoped writes), source control (code grounding), and observability.</li>
         <li>Every tool designed least-privilege — higher-risk write/admin capabilities explicitly disabled — isolated in its own sandboxed runtime with no dependence on the host machine's personal setup.</li>
@@ -1232,6 +1232,7 @@ const statObserver = new IntersectionObserver((entries)=>{
       const target = parseFloat(el.dataset.count);
       const isFloat = target % 1 !== 0;
       let cur = 0;
+      el.textContent = isFloat ? '0.0' : '0';
       const step = target / 40;
       const iv = setInterval(()=>{
         cur += step;
@@ -1678,8 +1679,8 @@ if(!isTouch && !prefersReducedMotion){
     chatBody.appendChild(thinkMsg);
     chatBody.scrollTop = chatBody.scrollHeight;
 
-    const thinkDelay = 550 + Math.random() * 500;
-    const typeDelay = delay || Math.min(2200, 600 + html.length * 6 + Math.random()*500);
+    const thinkDelay = 200 + Math.random() * 200;
+    const typeDelay = delay || Math.min(700, 200 + html.length * 2);
 
     return new Promise(resolve=>{
       setTimeout(()=>{
@@ -1869,9 +1870,7 @@ if(!isTouch && !prefersReducedMotion){
     chatPanel.classList.toggle('open', opened);
     chatBackdrop.classList.toggle('open', opened);
     if(opened && chatBody.children.length === 0){
-      setTimeout(()=>{
-        botSay(`Hi, I'm a small assistant for ${KB.name}'s portfolio. I only answer from what's on this page — ask me about experience, skills, projects, or contact info.`, 600).then(()=> setChips(DEFAULT_CHIPS));
-      }, 200);
+      botSay(`Hi, I'm a small assistant for ${KB.name}'s portfolio. I only answer from what's on this page — ask me about experience, skills, projects, or contact info.`, 400).then(()=> setChips(DEFAULT_CHIPS));
     }
     if(opened) setTimeout(()=> chatInput.focus(), 300);
   });
